@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprendre les Systèmes d'Exploitation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fff9e6 0%, #ffe6f0 25%, #e6f3ff 50%, #f0e6ff 75%, #fff9e6 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #fff9e6 0%, #ffe6f0 25%, #e6f3ff 50%, #f0e6ff 75%, #fff9e6 100%);
+            color: black;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .section {
+            padding: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+        }
+
+        .probleme {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+            margin-bottom: 20px;
+        }
+
+        .probleme h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .os-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .os-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .os-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .os-card h3 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        .os-card p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .exercice {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2196F3;
+            margin: 20px 0;
+        }
+
+        .exercice h4 {
+            color: #2196F3;
+            margin-bottom: 10px;
+        }
+
+        .reponse {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .reponse.active {
+            display: block;
+        }
+
+        .reponse p {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #764ba2;
+        }
+
+        .quiz {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .quiz-question {
+            margin-bottom: 20px;
+        }
+
+        .quiz-question label {
+            display: block;
+            padding: 10px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .quiz-question label:hover {
+            background: #efefef;
+        }
+
+        .quiz-question input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .resultat {
+            display: none;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .resultat.correct {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .resultat.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .comparaison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparaison-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .comparaison-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .comparaison-box ul {
+            list-style-position: inside;
+            line-height: 1.8;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .bureau-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .bureau-demo {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            min-height: 300px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .icone-bureau {
+            width: 80px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .icone-bureau:hover {
+            transform: scale(1.1);
+        }
+
+        .icone-bureau div {
+            font-size: 3em;
+            margin-bottom: 5px;
+        }
+
+        .icone-bureau p {
+            font-size: 0.75em;
+            text-align: center;
+            color: #333;
+            word-wrap: break-word;
+        }
+
+        .fenetre {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin: 15px 0;
+            overflow: hidden;
+            max-width: 600px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .barre-titre {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        .boutons-controle {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-controle {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .btn-reduire {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-reduire:hover {
+            background: #ffb300;
+            transform: scale(1.1);
+        }
+
+        .btn-agrandir {
+            background: #34a853;
+            color: white;
+        }
+
+        .btn-agrandir:hover {
+            background: #2d8659;
+            transform: scale(1.1);
+        }
+
+        .btn-fermer {
+            background: #ea4335;
+            color: white;
+        }
+
+        .btn-fermer:hover {
+            background: #d33425;
+            transform: scale(1.1);
+        }
+
+        .contenu-fenetre {
+            padding: 20px;
+            color: #333;
+        }
+
+        .contenu-fenetre p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .elements-liste {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .element-item {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .element-item h5 {
+            color: #667eea;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .element-item p {
+            font-size: 0.9em;
+            color: #666;
+            margin: 0;
+        }
+
+        .tasklist {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .tasklist-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .tasklist-item span {
+            font-size: 1.5em;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .comparison-os-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .comparison-os-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .os-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .os-info {
+            font-size: 0.95em;
+            line-height: 1.8;
+        }
+
+        .positive {
+            color: #90EE90;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .negative {
+            color: #FFB6C6;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+
+        .os-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .os-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+        }
+
+        .os-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .os-card h3 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .os-card h3 img {
+            width: 45px;
+            height: 90px;
+            object-fit: contain;
+            filter: none;
+        }
+
+        .os-card p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🖥️ Les Systèmes d'Exploitation</h1>
+            <p>Comprendre comment fonctionnent Windows, Android, MacOS et plus...</p>
+        </header>
+
+        <!-- Section Problème -->
+        <div class="section">
+            <h2>🤔 La Situation-Problème</h2>
+            <div class="probleme">
+                <h3>Votre école vient de recevoir du nouveau matériel !</h3>
+                <p>Vous avez remarqué que :</p>
+                <ul style="margin-left: 20px; margin-top: 10px; line-height: 2;">
+                    <li>Les nouveaux ordinateurs affichent <span class="highlight">Windows 11</span></li>
+                    <li>Les anciennes machines tournent sous <span class="highlight">Windows 10</span></li>
+                    <li>Les tablettes utilisent <span class="highlight">Android</span></li>
+                    <li>Les MacBook affichent <span class="highlight">MacOS</span></li>
+                    <li>Les Chromebooks utilisent <span class="highlight">ChromeOS</span></li>
+                </ul>
+                <p style="margin-top: 15px; font-weight: bold;">💡 Comment c'est possible que chaque appareil soit si
+                    différent ? Quel est leur point commun ?</p>
+            </div>
+        </div>
+
+        <!-- Section Définition -->
+        <div class="section">
+            <h2>📚 Qu'est-ce qu'un Système d'Exploitation ?</h2>
+            <div style="background: #e7f3ff; padding: 20px; border-radius: 10px; border-left: 4px solid #2196F3;">
+                <p style="font-size: 1.1em; line-height: 1.8;">
+                    Un <span class="highlight">système d'exploitation (OS)</span> est comme le <strong>chef
+                        d'orchestre</strong> de votre appareil.
+                </p>
+                <p style="margin-top: 15px; line-height: 1.8;">
+                    Il fait le lien entre vous (l'utilisateur) et la machine (le matériel).
+                </p>
+                <p style="margin-top: 15px; font-style: italic; color: #555;">
+                    C'est lui qui vous permet de :<br>
+                    ✓ Cliquer sur l'écran<br>
+                    ✓ Ouvrir des applications<br>
+                    ✓ Enregistrer vos fichiers<br>
+                    ✓ Utiliser la caméra ou l'imprimante
+                </p>
+            </div>
+        </div>
+
+        <!-- Section Bureau et Fenêtres -->
+        <div class="section">
+            <h2>🖥️ Le Bureau et les Fenêtres</h2>
+            <div class="bureau-section">
+                <h3 style="color: #667eea; margin-bottom: 15px;">Qu'est-ce que le Bureau ?</h3>
+                <p>Le <strong>bureau</strong> est l'écran d'accueil que vous voyez quand vous allumez votre ordinateur.
+                </p>
+                <p style="margin-top: 10px;">C'est comme votre table de travail : vous y mettez des raccourcis (icônes)
+                    pour accéder rapidement à vos programmes.</p>
+
+                <div class="section">
+                    <div class="exercice">
+                        <h4>Exemple de Bureau Windows :</h4>
+                        <a class="exercise-card" href="https://tabdellah.github.io/u1/exercice15_bureau_windows.html"
+                            target="_blank">
+                            <button class="start-btn">Explorer le bureau windows <i
+                                    class="fas fa-arrow-right"></i></button>
+                        </a>
+                        <div class="reponse" id="rep1">
+                            <p><strong>1. Ordinateur neuf → Windows 11</strong><br>Vous remarquez l'icône Windows en bas
+                                à gauche</p>
+                            <p style="margin-top: 10px;"><strong>2. Tablette → Android</strong><br>L'écran d'accueil
+                                avec les applications en grille</p>
+                            <p style="margin-top: 10px;"><strong>3. MacBook → MacOS</strong><br>L'Apple en haut à
+                                gauche, la barre des menus</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Fenêtres -->
+        <div class="section">
+            <h2>🪟 Les Fenêtres</h2>
+            <div class="bureau-section">
+                <p>Une <strong>fenêtre</strong> est une boîte qui s'ouvre quand vous lancez une application.</p>
+                <p style="margin-top: 10px;">Chaque fenêtre a :</p>
+                <ul style="margin-left: 20px; margin-top: 10px; line-height: 2;">
+                    <li>📌 Une barre de titre (avec le nom de l'application)</li>
+                    <li>📘 Des boutons de contrôle (réduire, agrandir, fermer)</li>
+                    <li>📄 Un contenu (le programme à l'intérieur)</li>
+                </ul>
+
+                <h4 style="color: #667eea; margin-top: 20px; margin-bottom: 10px;">Exemple d'une Fenêtre :</h4>
+                <div class="fenetre">
+                    <div class="barre-titre">
+                        📄 Bloc-notes
+                        <div class="boutons-controle">
+                            <button class="btn-controle btn-reduire" title="Réduire">−</button>
+                            <button class="btn-controle btn-agrandir" title="Agrandir">◻</button>
+                            <button class="btn-controle btn-fermer" title="Fermer">✕</button>
+                        </div>
+                    </div>
+                    <div class="contenu-fenetre">
+                        <p>C'est le contenu de la fenêtre. Vous pouvez écrire, dessiner ou utiliser l'application ici.
+                        </p>
+                        <p style="margin-top: 15px; font-style: italic; color: #999;">Exemple : un texte, une image, une
+                            vidéo...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Boutons de Contrôle -->
+        <div class="section">
+            <h2>📘 Les Boutons de Contrôle</h2>
+            <div class="bureau-section">
+                <p style="margin-bottom: 20px;">Chaque fenêtre a 3 boutons en haut à droite :</p>
+
+                <div class="elements-liste">
+                    <div class="element-item">
+                        <h5>
+                            <span
+                                style="background: #ffc107; color: #333; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8em;">−</span>
+                            Bouton Réduire
+                        </h5>
+                        <p>Fait disparaître la fenêtre. Elle se cache dans la barre des tâches en bas. Vous pouvez la
+                            reouvrir en cliquant dessus.</p>
+                    </div>
+
+                    <div class="element-item">
+                        <h5>
+                            <span
+                                style="background: #34a853; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8em;">◻</span>
+                            Bouton Agrandir
+                        </h5>
+                        <p>Agrandit la fenêtre pour qu'elle prenne tout l'écran. Cliquer de nouveau la remet à sa taille
+                            normale.</p>
+                    </div>
+
+                    <div class="element-item">
+                        <h5>
+                            <span
+                                style="background: #ea4335; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8em;">✕</span>
+                            Bouton Fermer
+                        </h5>
+                        <p>Ferme complètement la fenêtre. L'application s'arrête. Attention : vous risquez de perdre
+                            votre travail !</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Barre des Tâches -->
+        <div class="section">
+            <h2>📋 La Barre des Tâches</h2>
+            <div class="bureau-section">
+                <p>La <strong>barre des tâches</strong> est en bas de l'écran (sur Windows). Elle montre :</p>
+                <img src="https://i.imgur.com/hCJnCfE.png" alt="la barre des tâches Windows"
+                    style="width: 100%; margin-top: 15px;">
+
+                <div class="tasklist">
+                    <div class="tasklist-item">
+                        <span>⏰</span>
+                        <div><strong>L'heure</strong> - en bas à droite</div>
+                    </div>
+                    <div class="tasklist-item">
+                        <span>📱</span>
+                        <div><strong>Les applications ouvertes</strong> - vous pouvez cliquer pour les afficher</div>
+                    </div>
+                    <div class="tasklist-item">
+                        <span>📊</span>
+                        <div><strong>Le volume sonore</strong> - pour augmenter/diminuer le son</div>
+                    </div>
+                    <div class="tasklist-item">
+                        <span>🪟</span>
+                        <div><strong>Le menu Démarrer</strong> - en bas à gauche (logo Windows)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Les OS -->
+        <div class="section">
+            <h2>🌐 Quelques systèmes d exploitation </h2>
+            <div class="os-grid">
+                <div class="os-card" style="background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);">
+                    <h3><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png" alt="windows"> Windows</h3>
+                    <p>Ordinateurs de bureau</p>
+                </div>
+                <div class="os-card" style="background: linear-gradient(135deg, #34a853 0%, #1e8e3e 100%);">
+                    <h3><img src="https://cdn-icons-png.flaticon.com/512/226/226770.png" alt="android"> Android</h3>
+                    <p>Tablettes & Smartphones</p>
+                </div>
+                <div class="os-card" style="background: linear-gradient(135deg, #000000 0%, #434343 100%);">
+                    <h3><img src="https://i.imgur.com/an3Uhx9.png" alt="macos"> MacOS</h3>
+                    <p>Ordinateurs Apple</p>
+                </div>
+                <div class="os-card" style="background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);">
+                    <h3><img src="https://i.imgur.com/71N2GxC.png" alt="chromeos"> ChromeOS</h3>
+                    <p>Chromebooks</p>
+                </div>
+                <div class="os-card" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);">
+                    <h3><img src="https://cdn-icons-png.flaticon.com/512/226/226772.png" alt="linux"> Linux</h3>
+                    <p>Serveurs & Systèmes</p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Exercice 2 : Comparaison -->
+        <div class="section">
+            <h2>📄 Comparer les OS</h2>
+
+            <div class="comparison-grid">
+                <div class="comparison-os-card" style="background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%);">
+                    <div class="os-card">
+                        <h3><img src="https://cdn-icons-png.flaticon.com/512/732/732221.png" alt="windows"></h3>
+                        Windows
+                    </div>
+                    <div class="os-info">
+                        <div class="positive">✓ Facile à utiliser</div>
+                        <div class="negative">✗ Un peu cher</div>
+                    </div>
+                </div>
+
+                <div class="comparison-os-card" style="background: linear-gradient(135deg, #34a853 0%, #1e8e3e 100%);">
+                    <div class="os-card">
+                        <h3><img src="https://cdn-icons-png.flaticon.com/512/226/226770.png" alt="Android"></h3>
+                        Android
+                    </div>
+                    <div class="os-info">
+                        <div class="positive">✓ Gratuit et pratique</div>
+                        <div class="negative">✗ Parfois moins sûr</div>
+                    </div>
+                </div>
+
+                <div class="comparison-os-card" style="background: linear-gradient(135deg, #000000 0%, #434343 100%);">
+                    <div class="os-card">
+                        <h3><img src="https://i.imgur.com/an3Uhx9.png" alt="MacOs"></h3>
+                        MacOS
+                    </div>
+                    <div class="os-info">
+                        <div class="positive">✓ Très sûr et beau</div>
+                        <div class="negative">✗ Très cher</div>
+                    </div>
+                </div>
+
+                <div class="comparison-os-card" style="background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);">
+                    <div class="os-card">
+                        <h3><img src="https://i.imgur.com/71N2GxC.png" alt="ChromeOS"></h3>
+                        ChromeOS
+                    </div>
+                    <div class="os-info">
+                        <div class="positive">✓ Rapide et pas cher</div>
+                        <div class="negative">✗ Nécessite une connexion Internet</div>
+                    </div>
+                </div>
+                <div class="comparison-os-card" style="background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);">
+                    <div class="os-card">
+                        <h3><img src="https://cdn-icons-png.flaticon.com/512/226/226772.png" alt="Linux"></h3>
+                        Linux
+                    </div>
+                    <div class="os-info">
+                        <div class="positive">✓ Gratuit, rapide et personnalisable</div>
+                        <div class="negative">✗ Moins facile pour les débutants</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz -->
+        <div class="section">
+            <h2>🎯 Quiz : Vérifiez votre compréhension</h2>
+
+            <div class="quiz">
+                <div class="quiz-question">
+                    <h4>Question 1 : Quel est le rôle d'un système d'exploitation ?</h4>
+                    <label><input type="radio" name="q1"> Afficher les vidéos YouTube</label>
+                    <label><input type="radio" name="q1"> Faire le lien entre l'utilisateur et la machine</label>
+                    <label><input type="radio" name="q1"> Écrire des emails</label>
+                    <button onclick="verifierQ1()">Vérifier</button>
+                    <div class="resultat" id="res1"></div>
+                </div>
+            </div>
+
+            <div class="quiz">
+                <div class="quiz-question">
+                    <h4>Question 2 : Quel OS est utilisé sur les tablettes du collège ?</h4>
+                    <label><input type="radio" name="q2"> Windows</label>
+                    <label><input type="radio" name="q2"> Android</label>
+                    <label><input type="radio" name="q2"> MacOS</label>
+                    <button onclick="verifierQ2()">Vérifier</button>
+                    <div class="resultat" id="res2"></div>
+                </div>
+            </div>
+
+            <div class="quiz">
+                <div class="quiz-question">
+                    <h4>Question 3 : Quel OS est le plus léger et rapide ?</h4>
+                    <label><input type="radio" name="q3"> Windows 11</label>
+                    <label><input type="radio" name="q3"> ChromeOS</label>
+                    <label><input type="radio" name="q3"> Android</label>
+                    <button onclick="verifierQ3()">Vérifier</button>
+                    <div class="resultat" id="res3"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Résumé -->
+        <div class="section"
+            style="background: linear-gradient(135deg, #fff9e6 0%, #ffe6f0 25%, #e6f3ff 50%, #f0e6ff 75%, #fff9e6 100%);color: black;">
+            <h2 style="color: black;border-left-color: black;">📋 À Retenir</h2>
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px;">
+                <p style="margin: 10px 0; font-size: 1.1em;">✓ Un OS est le « chef d'orchestre » de l'appareil.</p>
+                <p style="margin: 10px 0; font-size: 1.1em;">✓ Chaque appareil peut avoir un OS différent.</p>
+                <p style="margin: 10px 0; font-size: 1.1em;">✓ Windows, Android, MacOS et ChromeOS font tous le même
+                    travail.</p>
+                <p style="margin: 10px 0; font-size: 1.1em;">✓ L'OS permet à l'utilisateur et au matériel de
+                    communiquer.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleReponse(id) {
+            const elem = document.getElementById(id);
+            elem.classList.toggle('active');
+        }
+
+        function verifierQ1() {
+            const selected = document.querySelector('input[name="q1"]:checked');
+            const res = document.getElementById('res1');
+            if (selected && selected.parentElement.textContent.includes('Faire le lien')) {
+                res.textContent = '✓ Correct ! L\'OS est le lien entre vous et la machine';
+                res.className = 'resultat correct';
+            } else {
+                res.textContent = '✗ Essayez encore... L\'OS fait le lien entre l\'utilisateur et la machine';
+                res.className = 'resultat incorrect';
+            }
+        }
+
+        function verifierQ2() {
+            const selected = document.querySelector('input[name="q2"]:checked');
+            const res = document.getElementById('res2');
+            if (selected && selected.parentElement.textContent.includes('Android')) {
+                res.textContent = '✓ Exact ! Les tablettes du collège utilisent Android';
+                res.className = 'resultat correct';
+            } else {
+                res.textContent = '✗ Essayez encore... C\'est Android !';
+                res.className = 'resultat incorrect';
+            }
+        }
+
+        function verifierQ3() {
+            const selected = document.querySelector('input[name="q3"]:checked');
+            const res = document.getElementById('res3');
+            if (selected && selected.parentElement.textContent.includes('ChromeOS')) {
+                res.textContent = '✓ Correct ! ChromeOS est très léger et rapide';
+                res.className = 'resultat correct';
+            } else {
+                res.textContent = '✗ Essayez encore... C\'est ChromeOS le plus léger !';
+                res.className = 'resultat incorrect';
+            }
+        }
+    </script>
+</body>
+
+</html>
