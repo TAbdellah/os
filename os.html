@@ -308,38 +308,104 @@
         }
 
         .retiens-box {
-            background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe6d5 100%);
             padding: 30px;
             border-radius: 12px;
             margin-top: 20px;
             box-shadow: 0 6px 20px rgba(255, 107, 157, 0.2);
         }
 
-        .retiens-box ul {
-            list-style: none;
+        .retiens-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
         }
 
-        .retiens-box li {
-            padding: 12px 0;
-            padding-left: 30px;
-            font-size: 1.05em;
-            line-height: 1.6;
+        .retiens-section {
+            border: 2px solid #ff6b9d;
+            padding: 12px;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .retiens-section h3 {
+            color: #ee5a6f;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            border-bottom: 2px solid #ff6b9d;
+            padding-bottom: 5px;
+        }
+
+        .retiens-section ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .retiens-section li {
+            padding: 8px 0;
+            padding-left: 25px;
+            font-size: 0.95em;
+            line-height: 1.5;
             position: relative;
             color: #333;
             transition: transform 0.2s;
         }
 
-        .retiens-box li:hover {
+        .retiens-section li:hover {
             transform: translateX(5px);
         }
 
-        .retiens-box li:before {
+        .retiens-section li:before {
             content: "✓";
             position: absolute;
             left: 0;
             font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1.1em;
+            color: #ff6b9d;
+        }
+
+        .hierarchy {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .layer {
+            background: white;
+            padding: 8px 12px;
+            margin: 6px auto;
+            border: 2px solid #ff6b9d;
+            max-width: 180px;
+            font-weight: bold;
+            color: #333;
+            font-size: 0.95em;
+            border-radius: 5px;
+        }
+
+        .arrow {
+            color: #ff6b9d;
+            font-size: 1em;
+            margin: 3px 0;
+        }
+
+        .os-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .os-item {
+            background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+            padding: 10px;
+            border: 2px solid #ee5a6f;
+            text-align: center;
+            font-weight: bold;
             color: white;
+            font-size: 0.9em;
+            border-radius: 5px;
         }
 
         .comparison-grid {
@@ -495,7 +561,9 @@
         @media (max-width: 768px) {
 
             .symptoms-grid,
-            .comparison-grid {
+            .comparison-grid,
+            .retiens-grid,
+            .os-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -516,6 +584,7 @@
             }
         }
     </style>
+    
 </head>
 
 <body>
@@ -708,24 +777,54 @@
                 </div>
             </div>
 
-            <!-- SECTION 5: JE RETIENS -->
+            <!-- SECTION 5: JE RETIENS (REMPLACÉ) -->
             <div class="section" id="retiens">
                 <h2><span>🧠</span>Je Retiens</h2>
                 <div class="retiens-box">
-                    <ul>
-                        <li>Le <strong>S.E</strong> est le <strong>chef d'orchestre</strong> de l'ordinateur 🎵</li>
-                        <li>Sans lui, les composants internes ne savent <strong>pas quoi faire</strong> ⚙️</li>
-                        <li>L'<strong>interface graphique</strong> permet de <strong>communiquer facilement</strong>
-                            avec la machine (cliquer, glisser...) 🖱️</li>
-                        <li>Le <strong>bureau</strong> est l'<strong>écran d'accueil</strong> avec tes raccourcis et
-                            applications 🖥️</li>
-                        <li>Les <strong>fenêtres</strong> s'ouvrent quand tu lances une application 🪟</li>
-                        <li>La <strong>barre des tâches</strong> montre l'<strong>heure</strong> et les
-                            <strong>applications ouvertes</strong> ⏰
-                        </li>
-                        <li>Il existe <strong>plusieurs S.E</strong> : Windows, macOS, Linux, Android, iOS 🌍</li>
-                        <li>Chaque S.E a ses <strong>avantages et inconvénients</strong> selon les besoins 💡</li>
-                    </ul>
+                    <div class="retiens-grid">
+                        <!-- Section 1: Définition -->
+                        <div class="retiens-section">
+                            <h3>Qu'est-ce qu'un OS ?</h3>
+                            <p style="font-size: 0.95em; line-height: 1.5; color: #333; margin: 0;">Un <strong>système d'exploitation (OS)</strong> est comme le <strong>chef d'orchestre de votre appareil</strong>. Il fait le lien entre vous (l'utilisateur) et la machine (le matériel informatique).</p>
+                        </div>
+
+                        <!-- Section 2: Fonctions principales -->
+                        <div class="retiens-section">
+                            <h3>Les fonctions principales</h3>
+                            <ul>
+                                <li>Cliquer et interagir avec l'écran</li>
+                                <li>Ouvrir et utiliser des applications</li>
+                                <li>Créer et enregistrer des fichiers</li>
+                                <li>Utiliser des périphériques</li>
+                            </ul>
+                        </div>
+
+                        <!-- Section 3: Systèmes d'exploitation -->
+                        <div class="retiens-section">
+                            <h3>Les principaux OS</h3>
+                            <div class="os-grid">
+                                <div class="os-item">iOS</div>
+                                <div class="os-item">macOS</div>
+                                <div class="os-item">Android</div>
+                                <div class="os-item">Windows</div>
+                                <div class="os-item">Linux</div>
+                            </div>
+                        </div>
+
+                        <!-- Section 4: Architecture -->
+                        <div class="retiens-section">
+                            <h3>Architecture informatique</h3>
+                            <div class="hierarchy">
+                                <div class="layer">Utilisateur</div>
+                                <div class="arrow">↓</div>
+                                <div class="layer">Applications</div>
+                                <div class="arrow">↓</div>
+                                <div class="layer">Système d'Exploitation</div>
+                                <div class="arrow">↓</div>
+                                <div class="layer">Matériel Informatique</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -767,7 +866,7 @@
                 </div>
 
                 <div class="exercices-box">
-                    <h4 style="color: #333; margin-top: 0; font-size: 1.3em;">📝 Exercices Pratiques</h4>
+                    <h4 style="color: #333; margin-top: 0; font-size: 1.3em;">🔍 Exercices Pratiques</h4>
                     <ul style="margin-left: 25px; line-height: 2.2;">
                         <li><strong>Site interactif :</strong> <a href="https://tabdellah.github.io/u1/"
                                 target="_blank">https://tabdellah.github.io/u1/</a> - Exercices pratiques</li>
