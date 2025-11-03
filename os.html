@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Système d'Exploitation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 25%, #ff9a9e 50%, #fad0c4 75%, #ffeaa7 100%);
+            min-height: 100vh;
+            padding: 20px;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            animation: slideDown 0.6s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            padding: 50px 40px;
+            border-bottom: 1px solid #f0f0f0;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #5f27cd;
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h3 {
+            color: #ee5a6f;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .objectif-list {
+            list-style: none;
+        }
+
+        .objectif-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            color: #333;
+            font-size: 1.05em;
+            line-height: 1.6;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .objectif-list li:hover {
+            transform: translateX(5px);
+        }
+
+        .objectif-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #ff6b9d;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .competence-box {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe6d5 100%);
+            border-left: 5px solid #ff6b9d;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            font-size: 1.05em;
+            color: #333;
+        }
+
+        .competence-box strong {
+            color: #ee5a6f;
+        }
+
+        .error-screen {
+            background: #000;
+            color: #00ff00;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            font-family: 'Courier New', monospace;
+            border: 3px solid #ee5a6f;
+            font-size: 1.1em;
+            line-height: 2.2;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(238, 90, 111, 0.3);
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.98;
+            }
+        }
+
+        .error-screen p:first-child {
+            font-size: 1.4em;
+            color: #ee5a6f;
+            margin-bottom: 15px;
+        }
+
+        .situation-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #333;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 2px solid #ff6b9d;
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.2);
+        }
+
+        .situation-box h3 {
+            color: #ee5a6f;
+            margin-top: 0;
+        }
+
+        .hint-box {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe6d5 100%);
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 2px solid #feca57;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hint-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #feca57, #ff6b9d);
+        }
+
+        .hint-box strong {
+            color: #ff6b9d;
+        }
+
+        .symptoms-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .symptom-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ee5a6f;
+            text-align: center;
+            color: #333;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .symptom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(238, 90, 111, 0.2);
+        }
+
+        .symptom-card span {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .mission-box {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe6d5 100%);
+            border: 3px dashed #ee5a6f;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .mission-box strong {
+            color: #ee5a6f;
+        }
+
+        .definition-box {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2196F3;
+            margin: 20px 0;
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .definition-box .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+            color: #ff6b9d;
+        }
+
+        button {
+            background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+            border: none;
+            padding: 12px 22px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(255, 107, 157, 0.5);
+        }
+
+        button.active {
+            background: linear-gradient(135deg, #feca57 0%, #ff6b9d 100%);
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+            transform: scale(1.05);
+        }
+
+        .retiens-box {
+            background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.2);
+        }
+
+        .retiens-box ul {
+            list-style: none;
+        }
+
+        .retiens-box li {
+            padding: 12px 0;
+            padding-left: 30px;
+            font-size: 1.05em;
+            line-height: 1.6;
+            position: relative;
+            color: #333;
+            transition: transform 0.2s;
+        }
+
+        .retiens-box li:hover {
+            transform: translateX(5px);
+        }
+
+        .retiens-box li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: white;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .os-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
+            border-radius: 12px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .os-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .os-card h4 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .os-card img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .os-info {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            text-align: left;
+        }
+
+        .positive {
+            color: #90EE90;
+            margin-bottom: 8px;
+        }
+
+        .negative {
+            color: #FFB6C6;
+        }
+
+        .mission-header {
+            background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.2);
+        }
+
+        .mission-header p {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .fiche-technique {
+            background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 25px;
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.2);
+        }
+
+        .fiche-technique input {
+            width: 100%;
+            padding: 8px 12px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+
+        .exercices-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .exercices-box ul {
+            margin-left: 25px;
+            line-height: 2;
+        }
+
+        .exercices-box li {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .exercices-box a {
+            color: #5f27cd;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .exercices-box a:hover {
+            text-decoration: underline;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            padding: 25px 40px;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 25px;
+            text-align: center;
+            color: #333;
+            font-size: 0.95em;
+        }
+
+        footer strong {
+            color: #ff6b9d;
+        }
+
+        .footer-heart {
+            color: #ff6b9d;
+            animation: heartbeat 1.5s ease infinite;
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .symptoms-grid,
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h2 {
+                font-size: 1.8em;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            .section {
+                padding: 30px 20px;
+            }
+
+            header {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1><span>💻</span>Système d'Exploitation</h1>
+            <p>Leçon - 1 heure - 2ème année collégial</p>
+        </header>
+
+        <div class="content-wrapper">
+            <!-- SECTION 1: OBJECTIFS -->
+            <div class="section active" id="objectifs">
+                <h2><span>🎯</span>Objectifs de la séance</h2>
+                <p style="font-size: 1.1em; margin-bottom: 20px; color: #333;">À la fin de cette leçon, tu pourra :</p>
+                <ul class="objectif-list">
+                    <li>Expliquer ce qu'est un système d'exploitation</li>
+                    <li>Reconnaître les éléments d'une interface graphique</li>
+                    <li>Gérer des fichiers et des dossiers</li>
+                    <li>Comprendre le lien avec l'unité centrale</li>
+                    <li>Découvrir les différents systèmes d'exploitation</li>
+                </ul>
+                <div class="competence-box">
+                    <strong>🎯 Compétence :</strong> C31 - Exploiter les interfaces graphiques pour interagir avec un
+                    ordinateur
+                </div>
+            </div>
+
+            <!-- SECTION 2: SITUATION PROBLÈME -->
+            <div class="section" id="probleme">
+                <h2><span>🔧</span>Situation Problème : L'Ordinateur de Sara</h2>
+                <h3 style="text-align: center;">Contexte</h3>
+
+                <div class="situation-box">
+                    <p style="font-size: 28px;"><strong>C'est dimanche soir...</strong></p>
+                    <p style="font-size: 28px;">Sara allume son ordinateur pour faire ses recherches d'école. Mais au
+                        lieu de voir le bureau habituel avec ses dossiers et ses applications, l'écran affiche juste :
+                        <br><span style="color: #ee5a6f; font-family: monospace; "><strong
+                                style="text-align: center;">"Système d'Exploitation non trouvé"</strong></span>
+                    </p>
+                    <p style="margin-top: 15px;font-size: 28px"><strong>C'est bizarre... hier soir ça marchait
+                            parfaitement ! 🤔</strong></p>
+                </div>
+
+                <div class="error-screen">
+                    <p><img src="https://i.imgur.com/vSDnv2w.png" alt="os" style="width: 100%;"></p>
+                    <p>Système d'Exploitation non trouvé</p>
+                    <p>_</p>
+                </div>
+
+                <div class="hint-box">
+                    <h4 style="margin-top: 0; color: #ee5a6f;font-size: 1.2em;">💡 L'Indice Important</h4>
+                    <p><strong style="font-size: 1.05em;">La mère de Sara dit :</strong> <span
+                            style="color: #ff6b9d; font-size: 1.05em;"><strong>"Ton petit frère a travaillé sur
+                                l'ordinateur ce matin..."</strong></span></p>
+                </div>
+
+                <h3 style="margin-top: 25px;">🔍 Ce qui s'est passé :</h3>
+                <div class="symptoms-grid">
+                    <div class="symptom-card">
+                        <span>⏰</span>
+                        <p>Matin : L'ordi marchait bien</p>
+                    </div>
+                    <div class="symptom-card">
+                        <span>👦</span>
+                        <p>Le petit frère a utilisé l'ordi</p>
+                    </div>
+                    <div class="symptom-card">
+                        <span>🚫</span>
+                        <p>Soir : Plus d'interface graphique</p>
+                    </div>
+                    <div class="symptom-card">
+                        <span>💥</span>
+                        <p>Message d'erreur du S.E</p>
+                    </div>
+                </div>
+
+                <div class="mission-box">
+                    <p style="margin: 0; font-size: 1.1em;"><strong>🎯 Ta Mission : Aider Sara !</strong></p>
+                    <p style="margin-top: 10px; color: #666;">Si tu comprends ce qu'est un Système d'Exploitation, tu
+                        pourras l'aider...</p>
+                    <p style="margin-top: 15px; font-size: 1.1em;"><strong>⏰ Elle a besoin de ses devoirs demain !
+                            Clique sur "Contenu" 📚</strong></p>
+                </div>
+            </div>
+
+            <!-- SECTION 3: CONTENU ADAPTÉ -->
+            <div class="section" id="contenu">
+                <h2><span>📚</span> Qu'est-ce qu'un Système d'Exploitation ?</h2>
+
+                <div class="definition-box">
+                    <p>Un <span class="highlight">système d'exploitation (OS)</span> est comme le <strong>chef
+                            d'orchestre</strong> de votre appareil.</p>
+                    <p style="margin-top: 15px;">Il fait le lien entre vous (l'utilisateur) et la machine (le matériel).
+                    </p>
+                    <p style="margin-top: 15px; font-style: italic; color: #555;">
+                        C'est lui qui vous permet de :<br>
+                        ✓ Cliquer et interagir avec l'écran<br>
+                        ✓ Ouvrir et utiliser des applications<br>
+                        ✓ Créer et enregistrer des fichiers<br>
+                        ✓ Utiliser des périphériques comme la caméra ou l'imprimante
+                    </p>
+                    <!-- 🌄 Image ajoutée ici -->
+                    <div style="text-align: center; margin: 15px 0;">
+                        <img src="https://i.imgur.com/yEQ3L3r.jpeg" alt="Exemple de Bureau Windows"
+                            style="max-width: 90%; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                    </div>
+
+                    <br>
+                    <div style="text-align: center;">
+                    <h4>Exemple de Bureau Windows :</h4>
+                    <a class="exercise-card" href="https://tabdellah.github.io/u1/exercice15_bureau_windows.html"
+                        target="_blank">
+                        <button class="start-btn">Explorer le bureau Windows <i class="fas fa-arrow-right"></i></button>
+                    </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- SECTION 4: COMPARAISON DES OS -->
+            <div class="section" id="comparaison">
+                <h2><span class="emoji">📊</span>Comparer les Systèmes d'Exploitation</h2>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 20px;">
+                    <div
+                        style="background: linear-gradient(135deg, #0078d4 0%, #106ebe 100%); border-radius: 12px; padding: 15px; color: white;">
+                        <h4
+                            style="color: white; margin-top: 0; text-align: center; font-size: 1.3em; margin-bottom: 15px;">
+                            <img src="https://cdn-icons-png.flaticon.com/512/732/732221.png" alt="windows"
+                                style="width: 40px; height: 40px; vertical-align: middle; margin-right: 10px;">Windows
+                        </h4>
+                        <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                            <div style="color: #90EE90; margin-bottom: 8px;">✓ Facile à utiliser</div>
+                            <div style="color: #FFB6C6;">✗ Un peu cher</div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: linear-gradient(135deg, #34a853 0%, #1e8e3e 100%); border-radius: 12px; padding: 15px; color: white;">
+                        <h4
+                            style="color: white; margin-top: 0; text-align: center; font-size: 1.3em; margin-bottom: 15px;">
+                            <img src="https://cdn-icons-png.flaticon.com/512/226/226770.png" alt="android"
+                                style="width: 40px; height: 40px; vertical-align: middle; margin-right: 10px;">Android
+                        </h4>
+                        <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                            <div style="color: #90EE90; margin-bottom: 8px;">✓ Gratuit et pratique</div>
+                            <div style="color: #FFB6C6;">✗ Parfois moins sûr</div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: linear-gradient(135deg, #000000 0%, #434343 100%); border-radius: 12px; padding: 15px; color: white;">
+                        <h4
+                            style="color: white; margin-top: 0; text-align: center; font-size: 1.3em; margin-bottom: 15px;">
+                            <img src="https://i.imgur.com/an3Uhx9.png" alt="macos"
+                                style="width: 40px; height: 40px; vertical-align: middle; margin-right: 10px;">MacOS
+                        </h4>
+                        <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                            <div style="color: #90EE90; margin-bottom: 8px;">✓ Très sûr et beau</div>
+                            <div style="color: #FFB6C6;">✗ Très cher</div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: linear-gradient(135deg, #4285f4 0%, #34a853 100%); border-radius: 12px; padding: 15px; color: white;">
+                        <h4
+                            style="color: white; margin-top: 0; text-align: center; font-size: 1.3em; margin-bottom: 15px;">
+                            <img src="https://i.imgur.com/71N2GxC.png" alt="chromeos"
+                                style="width: 40px; height: 40px; vertical-align: middle; margin-right: 10px;">ChromeOS
+                        </h4>
+                        <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                            <div style="color: #90EE90; margin-bottom: 8px;">✓ Rapide et pas cher</div>
+                            <div style="color: #FFB6C6;">✗ Nécessite Internet</div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); border-radius: 12px; padding: 15px; color: white;">
+                        <h4
+                            style="color: white; margin-top: 0; text-align: center; font-size: 1.3em; margin-bottom: 15px;">
+                            <img src="https://cdn-icons-png.flaticon.com/512/226/226772.png" alt="linux"
+                                style="width: 40px; height: 40px; vertical-align: middle; margin-right: 10px;">Linux
+                        </h4>
+                        <div style="background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px;">
+                            <div style="color: #90EE90; margin-bottom: 8px;">✓ Gratuit et personnalisable</div>
+                            <div style="color: #FFB6C6;">✗ Moins facile pour débutants</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: JE RETIENS -->
+            <div class="section" id="retiens">
+                <h2><span>🧠</span>Je Retiens</h2>
+                <div class="retiens-box">
+                    <ul>
+                        <li>Le <strong>S.E</strong> est le <strong>chef d'orchestre</strong> de l'ordinateur 🎵</li>
+                        <li>Sans lui, les composants internes ne savent <strong>pas quoi faire</strong> ⚙️</li>
+                        <li>L'<strong>interface graphique</strong> permet de <strong>communiquer facilement</strong>
+                            avec la machine (cliquer, glisser...) 🖱️</li>
+                        <li>Le <strong>bureau</strong> est l'<strong>écran d'accueil</strong> avec tes raccourcis et
+                            applications 🖥️</li>
+                        <li>Les <strong>fenêtres</strong> s'ouvrent quand tu lances une application 🪟</li>
+                        <li>La <strong>barre des tâches</strong> montre l'<strong>heure</strong> et les
+                            <strong>applications ouvertes</strong> ⏰</li>
+                        <li>Il existe <strong>plusieurs S.E</strong> : Windows, macOS, Linux, Android, iOS 🌍</li>
+                        <li>Chaque S.E a ses <strong>avantages et inconvénients</strong> selon les besoins 💡</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SECTION 6: EXERCICES -->
+            <div class="section" id="exercices">
+                <h2><span>📋</span>Mission : Enquête Technique</h2>
+
+                <div class="mission-header">
+                    <p><strong>⏱️ Durée : 30 minutes</strong></p>
+                    <p><strong>🎯 Mission :</strong> Établis un profil technique complet de l'ordinateur en explorant le
+                        Système d'Exploitation.</p>
+                    <p style="margin-bottom: 0;">Navigue dans les menus du S.E et établis une fiche d'identité de la
+                        machine.</p>
+                </div>
+
+                <div class="fiche-technique">
+                    <h4 style="color: white; margin-top: 0; margin-bottom: 15px;">📊 Fiche Technique Finale</h4>
+                    <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;">
+                        <label style="display: block; margin-bottom: 15px;">
+                            <strong style="color: white;">💻 Processeur :</strong>
+                            <input type="text" placeholder="Entrez le processeur" />
+                        </label>
+                        <label style="display: block; margin-bottom: 15px;">
+                            <strong style="color: white;">🧠 Mémoire RAM :</strong>
+                            <input type="text" placeholder="Entrez la RAM" />
+                        </label>
+                        <label style="display: block; margin-bottom: 15px;">
+                            <strong style="color: white;">💾 Capacité Stockage :</strong>
+                            <input type="text" placeholder="Entrez la capacité" />
+                        </label>
+                        <label style="display: block;">
+                            <strong style="color: white;">⚙️ Système d'Exploitation :</strong>
+                            <input type="text" placeholder="Entrez le S.E" />
+                        </label>
+                    </div>
+                </div>
+
+                <div class="exercices-box">
+                    <h4 style="color: #333; margin-top: 0; font-size: 1.3em;">📝 Exercices Pratiques</h4>
+                    <ul style="margin-left: 25px; line-height: 2.2;">
+                        <li><strong>Site interactif :</strong> <a href="https://tabdellah.github.io/u1/"
+                                target="_blank">https://tabdellah.github.io/u1/</a> - Exercices pratiques</li>
+                        <li><strong>Exercice 16 :</strong> Identifier les différents éléments de l'interface graphique.
+                        </li>
+                        <li><strong>Exercice 17 :</strong> Reconnaître les différents OS et leurs caractéristiques.</li>
+                        <li><strong>Exercice 18 :</strong> Associer chaque OS à l'appareil correspondant.</li>
+                        <li><strong>Devoir :</strong> Appliquer vos connaissances dans une situation réelle.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- NAVIGATION BUTTONS -->
+            <div class="nav-buttons">
+                <button onclick="showSection('objectifs')" class="nav-btn active">🎯 Objectifs</button>
+                <button onclick="showSection('probleme')" class="nav-btn">🔧 Problème</button>
+                <button onclick="showSection('contenu')" class="nav-btn">📚 Contenu</button>
+                <button onclick="showSection('comparaison')" class="nav-btn">📊 Comparaison</button>
+                <button onclick="showSection('retiens')" class="nav-btn">🧠 Je retiens</button>
+                <button onclick="showSection('exercices')" class="nav-btn">📋 Exercices</button>
+            </div>
+
+            <!-- FOOTER -->
+            <footer>
+                <div style="margin-bottom: 15px;">
+                    <strong>© 2025-2026 Tous droits réservés</strong><br>
+                    Académie Régionale de l'Éducation et de la Formation – Région Souss Massa<br>
+                    Direction Provinciale Inzegane Aït Melloul<br>
+                    Collège Othmane Ibn Affane
+                </div>
+                <div style="font-size: 0.9em;">
+                    Conception et réalisation : <strong>Abdellah TAHTOH</strong><br>
+                    Fait avec <span class="footer-heart">❤</span> au service de l'éducation numérique
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        function showSection(id) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            document.getElementById(id).classList.add('active');
+
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            document.querySelector('.content-wrapper').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Animation au chargement
+        window.addEventListener('load', () => {
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach((btn, index) => {
+                btn.style.animation = `slideDown ${0.3 + index * 0.05}s ease`;
+            });
+        });
+    </script>
+</body>
+
+</html>
