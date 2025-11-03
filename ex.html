@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercices Interactifs - Système d'Exploitation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffeef5 0%, #f0e8ff 50%, #e8f4ff 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            color: #5b5eff;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            color: #6b6b8f;
+        }
+        
+        .h5p-activity {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .h5p-activity:hover {
+            border-color: #ff6b9d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .h5p-activity.active {
+            border-color: #ff6b9d;
+        }
+        
+        .activity-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            cursor: pointer;
+        }
+        
+        .activity-number {
+            background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        
+        .activity-title h2 {
+            color: #5b5eff;
+            font-size: 1.6em;
+            margin: 0;
+        }
+        
+        .activity-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .activity-content.show {
+            max-height: 2000px;
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 12px;
+            border-left: 4px solid #ff6b9d;
+        }
+        
+        .question p {
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            margin: 12px 0;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid #e0e0e8;
+        }
+        
+        .option:hover {
+            background: #f0e8ff;
+            border-color: #ff6b9d;
+            transform: translateX(5px);
+        }
+        
+        .option input[type="radio"],
+        .option input[type="checkbox"] {
+            margin-right: 15px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+        }
+        
+        .option label {
+            cursor: pointer;
+            flex: 1;
+            margin: 0;
+        }
+        
+        .drag-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        
+        .drag-column {
+            border: 2px dashed #ff6b9d;
+            border-radius: 12px;
+            padding: 15px;
+            min-height: 300px;
+            background: #fff9f7;
+        }
+        
+        .drag-column h4 {
+            color: #ff6b9d;
+            margin-bottom: 15px;
+            font-size: 1em;
+            border-bottom: 2px solid #ff6b9d;
+            padding-bottom: 10px;
+        }
+        
+        .draggable-item {
+            background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+            color: white;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: grab;
+            font-weight: bold;
+            user-select: none;
+            box-shadow: 0 2px 8px rgba(255, 107, 157, 0.3);
+            transition: all 0.2s;
+        }
+        
+        .draggable-item:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+        }
+        
+        .drop-target {
+            background: white;
+            border: 2px dashed #ff6b9d;
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 80px;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+        
+        .drop-target.drag-over {
+            background: #f0e8ff;
+            border-color: #5b5eff;
+            box-shadow: 0 0 10px rgba(91, 94, 255, 0.3);
+        }
+        
+        .drop-target h4 {
+            color: #ff6b9d;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+        }
+        
+        .image-matching {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .image-set {
+            text-align: center;
+        }
+        
+        .image-item {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid #ff6b9d;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+        
+        .image-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+        }
+        
+        .image-item.selected {
+            background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+            color: white;
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline-item {
+            display: flex;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .timeline-marker {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-right: 20px;
+            box-shadow: 0 2px 8px rgba(255, 107, 157, 0.3);
+        }
+        
+        .timeline-content {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            flex-grow: 1;
+            border-left: 4px solid #ff6b9d;
+        }
+        
+        .timeline-content p {
+            margin: 0;
+            color: #333;
+        }
+        
+        .fill-blank {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .fill-blank input[type="text"] {
+            padding: 8px 12px;
+            border: 2px solid #ff6b9d;
+            border-radius: 6px;
+            margin: 0 5px;
+            font-size: 1em;
+            min-width: 150px;
+        }
+        
+        .fill-blank input[type="text"]:focus {
+            outline: none;
+            background: #fff9f7;
+            box-shadow: 0 0 8px rgba(255, 107, 157, 0.3);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1.05em;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 107, 157, 0.5);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .feedback.show {
+            display: block;
+        }
+        
+        .feedback.correct {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        
+        .feedback.incorrect {
+            background: #f8d7da;
+            border: 2px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e8;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b9d 0%, #feca57 100%);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .score-display {
+            text-align: center;
+            font-size: 1.5em;
+            color: #5b5eff;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .drag-group,
+            .image-matching {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .h5p-activity {
+                padding: 20px;
+            }
+        }
+
+        /* FOOTER */
+    .footer {
+      /* background:linear-gradient(135deg, #667eea, #764ba2); */
+      color: #000;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      margin-top: 60px;
+      box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2)
+    }
+
+    .footer-content {
+      font-size: 14px;
+      line-height: 1.8;
+      font-weight: 600;
+      margin-bottom: 15px
+    }
+
+    .footer-author {
+      font-size: 13px;
+      color: #000;
+      margin-top: 15px;
+      font-weight: 700
+    }
+
+    .footer-heart {
+      color: #ff6b9d;
+      animation: heartbeat 1.5s ease infinite
+    }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💡 Exercices Interactifs</h1>
+            <p>Système d'Exploitation - 2ème année collège</p>
+        </div>
+        
+        <!-- Activité 1: Quiz Interactif -->
+        <div class="h5p-activity active">
+            <div class="activity-title" onclick="toggleActivity(0)">
+                <div class="activity-number">1</div>
+                <h2>📝 Quiz: Concepts Clés du SE</h2>
+            </div>
+            <div class="activity-content show">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                
+                <div class="question">
+                    <p><strong>Q1 :</strong> Qu'est-ce qu'un système d'exploitation ? / ما هو نظام التشغيل ؟</p>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1a" value="a">
+                        <label for="q1a">Un logiciel qui gère les ressources de l'ordinateur / برنامج يُدير موارد الحاسوب</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1b" value="b">
+                        <label for="q1b">Un appareil physique / جهاز مادي</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q1" id="q1c" value="c">
+                        <label for="q1c">Un type d'écran / نوع من الشاشات</label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p><strong>Q2 :</strong> Quel SE est le plus populaire sur ordinateur ? / أي نظام تشغيل هو الأكثر شهرة على أجهزة الكمبيوتر ؟</p>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2a" value="a">
+                        <label for="q2a">Linux / لينكس</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2b" value="b">
+                        <label for="q2b">Windows / ويندوز</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q2" id="q2c" value="c">
+                        <label for="q2c">Android / أندرويد</label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p><strong>Q3 :</strong> Que permet le SE ? / ماذا يسمح نظام التشغيل ؟</p>
+                    <div class="option">
+                        <input type="checkbox" id="q3a" value="a">
+                        <label for="q3a">Cliquer et interagir avec l'écran / النقر والتفاعل مع الشاشة</label>
+                    </div>
+                    <div class="option">
+                        <input type="checkbox" id="q3b" value="b">
+                        <label for="q3b">Ouvrir et utiliser des applications / فتح واستخدام التطبيقات</label>
+                    </div>
+                    <div class="option">
+                        <input type="checkbox" id="q3c" value="c">
+                        <label for="q3c">Créer et enregistrer des fichiers / إنشاء وحفظ الملفات</label>
+                    </div>
+                </div>
+                
+                <button class="submit-btn" onclick="checkQuiz1()">Vérifier les réponses</button>
+                <div class="feedback" id="feedback1"></div>
+            </div>
+        </div>
+        
+        <!-- Activité 2: Glisser-Déposer -->
+        <div class="h5p-activity">
+            <div class="activity-title" onclick="toggleActivity(1)">
+                <div class="activity-number">2</div>
+                <h2>🎯 Glisser-Déposer: Associe les Éléments</h2>
+            </div>
+            <div class="activity-content">
+                <p style="margin-bottom: 20px; color: #333; font-weight: bold;">Glisse les éléments vers la bonne catégorie / انقل العناصر إلى الفئة الصحيحة :</p>
+                
+                <div class="drag-group">
+                    <div>
+                        <h4>À Glisser / للسحب</h4>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="bureau">Bureau / مكتب</div>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="app">Navigateur Internet / متصفح الإنترنت</div>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="bureau">Dossiers / مجلدات</div>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="app">Word / وورد</div>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="bureau">Corbeille / سلة المحذوفات</div>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="app">Spotify / سبوتيفاي</div>
+                    </div>
+                    
+                    <div>
+                        <div class="drop-target" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)" data-target="bureau">
+                            <h4>Éléments du Bureau / عناصر سطح المكتب</h4>
+                            <div id="drop-bureau" style="min-height: 200px;"></div>
+                        </div>
+                        <div class="drop-target" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)" data-target="app">
+                            <h4>Applications / تطبيقات</h4>
+                            <div id="drop-app" style="min-height: 200px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="submit-btn" onclick="checkDragDrop()">Vérifier</button>
+                <div class="feedback" id="feedbackDrag"></div>
+            </div>
+        </div>
+        
+        <!-- Activité 3: Chronologie -->
+        <div class="h5p-activity">
+            <div class="activity-title" onclick="toggleActivity(2)">
+                <div class="activity-number">3</div>
+                <h2>⏱️ Chronologie: Ordonne les Étapes</h2>
+            </div>
+            <div class="activity-content">
+                <p style="margin-bottom: 20px; color: #333; font-weight: bold;">Numérote ces étapes de 1 à 5 :</p>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <input type="number" min="1" max="5" class="timeline-input" placeholder="?" style="width: auto; padding: 0 12px; margin-right: 20px; background: white; color: #333; border: 2px solid #ff6b9d; border-radius: 8px;">
+                        <div class="timeline-content">
+                            <p><strong>Tu cliques sur un fichier || تنقر على ملف</strong></p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <input type="number" min="1" max="5" class="timeline-input" placeholder="?" style="width: auto; padding: 0 12px; margin-right: 20px; background: white; color: #333; border: 2px solid #ff6b9d; border-radius: 8px;">
+                        <div class="timeline-content">
+                            <p><strong>Le SE charge le fichier en mémoire RAM || يقوم نظام التشغيل بتحميل الملف في الذاكرة العشوائية </strong></p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <input type="number" min="1" max="5" class="timeline-input" placeholder="?" style="width: auto; padding: 0 12px; margin-right: 20px; background: white; color: #333; border: 2px solid #ff6b9d; border-radius: 8px;">
+                        <div class="timeline-content">
+                            <p><strong>Le SE retrouve le fichier sur le disque dur || يجد نظام التشغيل الملف في القرص الصلب</strong></p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <input type="number" min="1" max="5" class="timeline-input" placeholder="?" style="width: auto; padding: 0 12px; margin-right: 20px; background: white; color: #333; border: 2px solid #ff6b9d; border-radius: 8px;">
+                        <div class="timeline-content">
+                            <p><strong>Le SE affiche le fichier à l'écran || يعرض نظام التشغيل الملف على الشاشة</strong></p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <input type="number" min="1" max="5" class="timeline-input" placeholder="?" style="width: auto; padding: 0 12px; margin-right: 20px; background: white; color: #333; border: 2px solid #ff6b9d; border-radius: 8px;">
+                        <div class="timeline-content">
+                            <p><strong>Tu vois le fichier apparaître || ترى الملف يظهر أمامك</strong></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="submit-btn" onclick="checkTimeline()">Vérifier</button>
+                <div class="feedback" id="feedbackTimeline"></div>
+            </div>
+        </div>
+        
+        <!-- Activité 4: Remplir les Blancs -->
+        <div class="h5p-activity">
+            <div class="activity-title" onclick="toggleActivity(3)">
+                <div class="activity-number">4</div>
+                <h2>✏️ Complète les Phrases</h2>
+            </div>
+            <div class="activity-content">
+                <p style="background: #fff3cd; padding: 12px; border-radius: 8px; margin-bottom: 20px; color: #333;">
+                    <strong>💡 Mots à utiliser :</strong> chef d'orchestre, l'utilisateur, la machine, macOS, Android
+                </p>
+                
+                <div class="fill-blank">
+                    <p>Un système d'exploitation est comme le <input type="text" id="blank1"> d'un ordinateur.</p>
+                </div>
+                
+                <div class="fill-blank">
+                    <p>Le SE fait le lien entre <input type="text" id="blank2"> et <input type="text" id="blank3"></p>
+                </div>
+                
+                <div class="fill-blank">
+                    <p>Les principaux systèmes d'exploitation sont Windows, <input type="text" id="blank4">, Linux et <input type="text" id="blank5"></p>
+                </div>
+                
+                <div class="fill-blank">
+                    <p><input type="text" id="blank6"> est gratuit et pratique pour les téléphones.</p>
+                </div>
+                
+                <button class="submit-btn" onclick="checkFillBlanks()">Vérifier</button>
+                <div class="feedback" id="feedbackFill"></div>
+            </div>
+        </div>
+        
+        <!-- Activité 5: Vrai ou Faux -->
+        <div class="h5p-activity">
+            <div class="activity-title" onclick="toggleActivity(4)">
+                <div class="activity-number">5</div>
+                <h2>✔️ Vrai ou Faux ?</h2>
+            </div>
+            <div class="activity-content">
+                <div class="question">
+                    <p><strong>Q1 :</strong> Le système d'exploitation gère les ressources de l'ordinateur. / نظام التشغيل يدير موارد الحاسوب.</p>
+                    <div class="option">
+                        <input type="radio" name="vf1" id="vf1a" value="true">
+                        <label for="vf1a">✅ Vrai / صحيح</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="vf1" id="vf1b" value="false">
+                        <label for="vf1b">❌ Faux / خاطئ</label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p><strong>Q2 :</strong> Windows et MacOS sont les deux seuls systèmes d'exploitation qui existent. / Windows و MacOS هما نظاما التشغيل الوحيدان الموجودان.</p>
+                    <div class="option">
+                        <input type="radio" name="vf2" id="vf2a" value="true">
+                        <label for="vf2a">✅ Vrai / صحيح</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="vf2" id="vf2b" value="false">
+                        <label for="vf2b">❌ Faux / خاطئ</label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p><strong>Q3 :</strong> Android est un système d'exploitation pour ordinateurs portables. / Android هو نظام تشغيل للكمبيوتر المحمول.</p>
+                    <div class="option">
+                        <input type="radio" name="vf3" id="vf3a" value="true">
+                        <label for="vf3a">✅ Vrai / صحيح</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="vf3" id="vf3b" value="false">
+                        <label for="vf3b">❌ Faux / خاطئ</label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p><strong>Q4 :</strong> Sans système d'exploitation, l'ordinateur peut fonctionner normalement. / بدون نظام تشغيل، يمكن للكمبيوتر أن يعمل بشكل طبيعي.</p>
+                    <div class="option">
+                        <input type="radio" name="vf4" id="vf4a" value="true">
+                        <label for="vf4a">✅ Vrai / صحيح</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="vf4" id="vf4b" value="false">
+                        <label for="vf4b">❌ Faux / خاطئ</label>
+                    </div>
+                </div>
+                
+                <button class="submit-btn" onclick="checkTrueFalse()">Vérifier</button>
+                <div class="feedback" id="feedbackVF"></div>
+            </div>
+        </div>
+        
+        <!-- Activité 6: Appairage d'Images -->
+        <div class="h5p-activity">
+            <div class="activity-title" onclick="toggleActivity(5)">
+                <div class="activity-number">6</div>
+                <h2>🔗 Apparie les SE à leurs Descriptions</h2>
+            </div>
+            <div class="activity-content">
+                <p style="margin-bottom: 20px; color: #333; font-weight: bold;">Glisse les systèmes d'exploitation vers leurs descriptions correctes :</p>
+                
+                <div class="drag-group">
+                    <div>
+                        <h4>À Glisser - Systèmes d'Exploitation</h4>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="populaire">🪟 Windows</div>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="premium">🎨 MacOS / iOS</div>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="mobile">🤖 Android</div>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="libre">🧊 Linux</div>
+                    </div>
+                    
+                    <div>
+                        <div class="drop-target" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)" data-target="populaire">
+                            <h4>✅ Facile à utiliser et très populaire || سهل الاستخدام وشائع جدًا</h4>
+                            <div id="drop-populaire" style="min-height: 80px;"></div>
+                        </div>
+                        <div class="drop-target" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)" data-target="premium">
+                            <h4>✅ Très cher mais très beau et sûr || سعره مرتفع لكنه جميل وآمن</h4>
+                            <div id="drop-premium" style="min-height: 80px;"></div>
+                        </div>
+                        <div class="drop-target" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)" data-target="mobile">
+                            <h4>✅ Gratuit et pratique pour téléphones || مجاني ومناسب للهواتف</h4>
+                            <div id="drop-mobile" style="min-height: 80px;"></div>
+                        </div>
+                        <div class="drop-target" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)" data-target="libre">
+                            <h4>✅ Gratuit et personnalisable || مجاني وقابل للتخصيص</h4>
+                            <div id="drop-libre" style="min-height: 80px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="submit-btn" onclick="checkDragDropOS()">Vérifier</button>
+                <div class="feedback" id="feedbackDragOS"></div>
+            </div>
+        </div>
+        
+        <!-- Activité 7: Quel est l'intrus ? -->
+        <div class="h5p-activity">
+            <div class="activity-title" onclick="toggleActivity(6)">
+                <div class="activity-number">7</div>
+                <h2>🎯 Quel est l'intrus ?</h2>
+            </div>
+            <div class="activity-content">
+                <div class="question">
+                    <p><strong>Q1 :</strong> Parmi ces éléments, quel n'est PAS un système d'exploitation ? || أيّ من هذه العناصر ليست بنظام تشغيل ؟</p>
+                    <div class="option">
+                        <input type="radio" name="intrus1" id="intrus1a" value="a">
+                        <label for="intrus1a">🔹 Windows</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="intrus1" id="intrus1b" value="b">
+                        <label for="intrus1b">🔹 Google Chrome</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="intrus1" id="intrus1c" value="c">
+                        <label for="intrus1c">🔹 MacOS</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="intrus1" id="intrus1d" value="d">
+                        <label for="intrus1d">🔹 Android</label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p><strong>Q2 :</strong> Parmi ces éléments, quel n'est PAS une fonction du SE ? || أيّ من هذه العناصر ليست وظيفة نظام التشغيل؟</p>
+                    <div class="option">
+                        <input type="radio" name="intrus2" id="intrus2a" value="a">
+                        <label for="intrus2a">🔹 Gérer les fichiers || إدارة الملفات</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="intrus2" id="intrus2b" value="b">
+                        <label for="intrus2b">🔹 Fabriquer des puces électroniques || صناعة الرقائق الإلكترونية</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="intrus2" id="intrus2c" value="c">
+                        <label for="intrus2c">🔹 Permettre d'utiliser les périphériques || تمكين استخدام الأجهزة الخارجية</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="intrus2" id="intrus2d" value="d">
+                        <label for="intrus2d">🔹 Afficher l'interface graphique || عرض الواجهة الرسومية</label>
+                    </div>
+                </div>
+                
+                <button class="submit-btn" onclick="checkIntrus()">Vérifier</button>
+                <div class="feedback" id="feedbackIntrus"></div>
+            </div>
+        </div>
+        
+        <!-- Activité 8: Chronologie Avancée 
+        <div class="h5p-activity">
+            <div class="activity-title" onclick="toggleActivity(7)">
+                <div class="activity-number">8</div>
+                <h2>⏱️ Ordonne les Étapes du Démarrage</h2>
+            </div>
+            <div class="activity-content">
+                <p style="margin-bottom: 20px; color: #333; font-weight: bold;">Numérote ces étapes de 1 à 4 : || رتب المراحل من 1 إلى 4</p>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <input type="number" min="1" max="4" class="timeline-input-boot" placeholder="?" style="width: auto; padding: 0 12px; margin-right: 20px; background: white; color: #333; border: 2px solid #ff6b9d; border-radius: 8px;">
+                        <div class="timeline-content">
+                            <p><strong>Le SE se charge en mémoire || يتم تحميل نظام التشغيل في الذاكرة</strong></p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <input type="number" min="1" max="4" class="timeline-input-boot" placeholder="?" style="width: auto; padding: 0 12px; margin-right: 20px; background: white; color: #333; border: 2px solid #ff6b9d; border-radius: 8px;">
+                        <div class="timeline-content">
+                            <p><strong>Tu cliques sur le bouton de démarrage || تنقر على زر التشغيل</strong></p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <input type="number" min="1" max="4" class="timeline-input-boot" placeholder="?" style="width: auto; padding: 0 12px; margin-right: 20px; background: white; color: #333; border: 2px solid #ff6b9d; border-radius: 8px;">
+                        <div class="timeline-content">
+                            <p><strong>L'ordinateur affiche le bureau avec les applications || يعرض الحاسوب سطح المكتب مع التطبيقات</strong></p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <input type="number" min="1" max="4" class="timeline-input-boot" placeholder="?" style="width: auto; padding: 0 12px; margin-right: 20px; background: white; color: #333; border: 2px solid #ff6b9d; border-radius: 8px;">
+                        <div class="timeline-content">
+                            <p><strong>Le matériel démarre et cherche le SE || يبدأ الجهاز في العمل ويبحث عن نظام التشغيل </strong></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="submit-btn" onclick="checkTimeline2()">Vérifier</button>
+                <div class="feedback" id="feedbackTimeline2"></div>
+            </div>
+        </div>-->
+        
+        <!-- Activité 9: Classement des Fonctions 
+        <div class="h5p-activity">
+            <div class="activity-title" onclick="toggleActivity(8)">
+                <div class="activity-number">9</div>
+                <h2>📋 Classe les Fonctions du SE</h2>
+            </div>
+            <div class="activity-content">
+                <p style="margin-bottom: 20px; color: #333; font-weight: bold;">Glisse les fonctions vers les bonnes catégories : || اسحب الوظائف إلى الفئات الصحيحة</p>
+                
+                <div class="drag-group">
+                    <div>
+                        <h4>À Glisser - Fonctions</h4>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="gestion">Afficher l'interface graphique || عرض الواجهة الرسومية</div>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="interface">Gérer les fichiers et dossiers || تمكين النقر بالماوس</div>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="interface">Permettre les clics souris || إدارة الملفات والمجلدات</div>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="gestion">Gérer la mémoire RAM || إدارة ذاكرة الوصول العشوائي (RAM)</div>
+                        <div class="draggable-item" draggable="true" ondragstart="dragStart(event)" data-match="gestion">Lancer plusieurs applications || تشغيل عدة تطبيقات</div>
+                    </div>
+                    
+                    <div>
+                        <div class="drop-target" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)" data-target="interface">
+                            <h4>👤 Interface Utilisateur || واجهة المستخدم</h4>
+                            <div id="drop-interface" style="min-height: 80px;"></div>
+                        </div>
+                        <div class="drop-target" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)" data-target="gestion">
+                            <h4>⚙️ Gestion des Ressources || إدارة الموارد</h4>
+                            <div id="drop-gestion" style="min-height: 80px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="submit-btn" onclick="checkDragDropFunctions()">Vérifier</button>
+                <div class="feedback" id="feedbackFunctions"></div>
+            </div>
+        </div>-->
+        
+        <!-- Activité 10: Quiz Difficile -->
+        <div class="h5p-activity">
+            <div class="activity-title" onclick="toggleActivity(7)">
+                <div class="activity-number">8</div>
+                <h2>🧠 Quiz Avancé</h2>
+            </div>
+            <div class="activity-content">
+                <div class="question">
+                    <p><strong>Q1 :</strong> Pourquoi le SE est-il appelé le "chef d'orchestre" de l'ordinateur ? || لماذا يُسمى نظام التشغيل "قائد الأوركسترا" للحاسوب ؟</p>
+                    <div class="option">
+                        <input type="radio" name="adv1" id="adv1a" value="a">
+                        <label for="adv1a">🔹 Parce qu'il joue de la musique || لأنه يعزف الموسيقى</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="adv1" id="adv1b" value="b">
+                        <label for="adv1b">🔹 Parce qu'il coordonne tous les composants pour travailler ensemble || لأنه ينسق جميع المكونات لتعمل معًا</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="adv1" id="adv1c" value="c">
+                        <label for="adv1c">🔹 Parce qu'il contrôle les haut-parleurs || لأنه يتحكم في مكبرات الصوت</label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p><strong>Q2 :</strong> Qu'est-ce que la RAM et quel est son rôle dans le SE ? || ما هي ذاكرة الوصول العشوائي وماهو دورها في نظام التشغيل؟</p>
+                    <div class="option">
+                        <input type="radio" name="adv2" id="adv2a" value="a">
+                        <label for="adv2a">🔹 C'est un stockage permanent qui garde les données || هي تخزين دائم يحفظ البيانات</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="adv2" id="adv2b" value="b">
+                        <label for="adv2b">🔹 C'est une mémoire rapide et temporaire pour les programmes en cours || هي ذاكرة سريعة ومؤقتة للبرامج قيد التشغيل</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="adv2" id="adv2c" value="c">
+                        <label for="adv2c">🔹 C'est le processeur de l'ordinateur || إنها المعالج الخاص بالحاسوب</label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <p><strong>Q3 :</strong> Si on supprime le SE d'un ordinateur, que se passe-t-il ? || إذا قمنا بحذف نظام التشغيل من الحاسوب، ماذا يحدث</p>
+                    <div class="option">
+                        <input type="radio" name="adv3" id="adv3a" value="a">
+                        <label for="adv3a">🔹 L'ordinateur fonctionne normalement || يعمل الحاسوب بشكل طبيعي</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="adv3" id="adv3b" value="b">
+                        <label for="adv3b">🔹 L'ordinateur s'arrête et ne peut plus être utilisé || يتوقف الحاسوب ولا يمكن استخدامه</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="adv3" id="adv3c" value="c">
+                        <label for="adv3c">🔹 C'est impossible, on ne peut pas le supprimer || هذا مستحيل، لا يمكن حذفه</label>
+                    </div>
+                </div>
+                
+                <button class="submit-btn" onclick="checkAdvancedQuiz()">Vérifier</button>
+                <div class="feedback" id="feedbackAdv"></div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 60px; padding: 30px; background: white; border-radius: 20px;">
+            <p style="color: #6b6b8f; font-size: 1.1em;">
+                <strong>Bravo!</strong> Tu as complété tous les 8 exercices interactifs. 🎉
+            </p>
+        </div>
+            <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-content">
+        <strong>© 2025-2026 Tous droits réservés</strong><br>
+        Académie Régionale de l'Éducation et de la Formation – Région Souss Massa<br>
+        Direction Provinciale Inzegane Aït Melloul<br>
+        Collège Othmane Ibn Affane
+      </div>
+      <div class="footer-author">
+        Conception et réalisation : <strong>Abdellah TAHTOH</strong><br>
+        Fait avec <span class="footer-heart">❤</span> au service de l'éducation numérique
+      </div>
+    </div>
+    </div>
+    
+    <script>
+        let draggedElement = null;
+        
+        function toggleActivity(index) {
+            const activities = document.querySelectorAll('.h5p-activity');
+            const content = activities[index].querySelector('.activity-content');
+            content.classList.toggle('show');
+        }
+        
+        function dragStart(e) {
+            draggedElement = e.target;
+            e.dataTransfer.effectAllowed = 'move';
+        }
+        
+        function dragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            e.target.closest('.drop-target').classList.add('drag-over');
+        }
+        
+        function dragLeave(e) {
+            e.target.closest('.drop-target').classList.remove('drag-over');
+        }
+        
+        function drop(e) {
+            e.preventDefault();
+            const target = e.target.closest('.drop-target');
+            const targetId = target.getAttribute('data-target');
+            const itemMatch = draggedElement.getAttribute('data-match');
+            
+            if (targetId === itemMatch) {
+                const dropZone = target.querySelector('[id^="drop-"]');
+                const clone = draggedElement.cloneNode(true);
+                clone.style.opacity = '0.7';
+                clone.draggable = false;
+                dropZone.appendChild(clone);
+                draggedElement.style.opacity = '0.3';
+            }
+            
+            target.classList.remove('drag-over');
+        }
+        
+        function checkQuiz1() {
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelector('input[name="q2"]:checked');
+            const q3a = document.getElementById('q3a').checked;
+            const q3b = document.getElementById('q3b').checked;
+            const q3c = document.getElementById('q3c').checked;
+            
+            const feedback = document.getElementById('feedback1');
+            feedback.classList.remove('correct', 'incorrect');
+            
+            if (q1 && q1.value === 'a' && q2 && q2.value === 'b' && q3a && q3b && q3c) {
+                feedback.classList.add('correct', 'show');
+                feedback.innerHTML = '✅ Excellentes réponses! Tu as tout juste!';
+            } else {
+                feedback.classList.add('incorrect', 'show');
+                feedback.innerHTML = '❌ Certaines réponses ne sont pas correctes. Révise le cours et réessaie!';
+            }
+        }
+        
+        function checkDragDrop() {
+            const feedback = document.getElementById('feedbackDrag');
+            const bureauCount = document.getElementById('drop-bureau').children.length;
+            const appCount = document.getElementById('drop-app').children.length;
+            
+            feedback.classList.remove('correct', 'incorrect');
+            
+            if (bureauCount === 3 && appCount === 3) {
+                feedback.classList.add('correct', 'show');
+                feedback.innerHTML = '✅ Parfait! Tu as bien catégorisé tous les éléments!';
+            } else {
+                feedback.classList.add('incorrect', 'show');
+                feedback.innerHTML = `❌ Il y a encore des erreurs. Bureau: ${bureauCount}/3, Applications: ${appCount}/3`;
+            }
+        }
+        
+        function checkTimeline() {
+            const feedback = document.getElementById('feedbackTimeline');
+            const inputs = document.querySelectorAll('.timeline-input');
+            const answers = [1, 3, 2, 4, 5];
+            let correct = 0;
+            
+            inputs.forEach((input, index) => {
+                if (parseInt(input.value) === answers[index]) {
+                    correct++;
+                }
+            });
+            
+            feedback.classList.remove('correct', 'incorrect');
+            
+            if (correct === 5) {
+                feedback.classList.add('correct', 'show');
+                feedback.innerHTML = '✅ Excellent! L\'ordre est parfait!';
+            } else {
+                feedback.classList.add('incorrect', 'show');
+                feedback.innerHTML = `❌ ${correct}/5 bonnes réponses. Essaie encore!`;
+            }
+        }
+        
+        function checkFillBlanks() {
+            const feedback = document.getElementById('feedbackFill');
+            const answers = {
+                blank1: 'chef',
+                blank2: 'l\'utilisateur',
+                blank3: 'la machine',
+                blank4: 'macOS',
+                blank5: 'Android',
+                blank6: 'Android'
+            };
+            
+            let correct = 0;
+            Object.entries(answers).forEach(([id, answer]) => {
+                const value = document.getElementById(id).value.trim().toLowerCase();
+                if (value.includes(answer.toLowerCase())) {
+                    correct++;
+                }
+            });
+            
+            feedback.classList.remove('correct', 'incorrect');
+            
+            if (correct === 6) {
+                feedback.classList.add('correct', 'show');
+                feedback.innerHTML = '✅ Parfait! Toutes les réponses sont correctes!';
+            } else {
+                feedback.classList.add('incorrect', 'show');
+                feedback.innerHTML = `❌ ${correct}/6 bonnes réponses. Relis le cours!`;
+            }
+        }
+        
+        function checkTrueFalse() {
+            const feedback = document.getElementById('feedbackVF');
+            const vf1 = document.querySelector('input[name="vf1"]:checked');
+            const vf2 = document.querySelector('input[name="vf2"]:checked');
+            const vf3 = document.querySelector('input[name="vf3"]:checked');
+            const vf4 = document.querySelector('input[name="vf4"]:checked');
+            
+            let correct = 0;
+            if (vf1 && vf1.value === 'true') correct++;
+            if (vf2 && vf2.value === 'false') correct++;
+            if (vf3 && vf3.value === 'false') correct++;
+            if (vf4 && vf4.value === 'false') correct++;
+            
+            feedback.classList.remove('correct', 'incorrect');
+            
+            if (correct === 4) {
+                feedback.classList.add('correct', 'show');
+                feedback.innerHTML = '✅ Excellent! Toutes les réponses sont correctes!';
+            } else {
+                feedback.classList.add('incorrect', 'show');
+                feedback.innerHTML = `❌ ${correct}/4 bonnes réponses. Essaie encore!`;
+            }
+        }
+        
+        function checkDragDropOS() {
+            const feedback = document.getElementById('feedbackDragOS');
+            const populaireCount = document.getElementById('drop-populaire').children.length;
+            const premiumCount = document.getElementById('drop-premium').children.length;
+            const mobileCount = document.getElementById('drop-mobile').children.length;
+            const libreCount = document.getElementById('drop-libre').children.length;
+            
+            feedback.classList.remove('correct', 'incorrect');
+            
+            if (populaireCount === 1 && premiumCount === 1 && mobileCount === 1 && libreCount === 1) {
+                feedback.classList.add('correct', 'show');
+                feedback.innerHTML = '✅ Excellent! Tu as bien classé tous les systèmes d\'exploitation!';
+            } else {
+                feedback.classList.add('incorrect', 'show');
+                feedback.innerHTML = `❌ Il y a encore des erreurs. Populaire: ${populaireCount}/1, Premium: ${premiumCount}/1, Mobile: ${mobileCount}/1, Libre: ${libreCount}/1`;
+            }
+        }
+        
+        function checkIntrus() {
+            const feedback = document.getElementById('feedbackIntrus');
+            const intrus1 = document.querySelector('input[name="intrus1"]:checked');
+            const intrus2 = document.querySelector('input[name="intrus2"]:checked');
+            
+            let correct = 0;
+            if (intrus1 && intrus1.value === 'b') correct++;
+            if (intrus2 && intrus2.value === 'b') correct++;
+            
+            feedback.classList.remove('correct', 'incorrect');
+            
+            if (correct === 2) {
+                feedback.classList.add('correct', 'show');
+                feedback.innerHTML = '✅ Parfait! Tu as trouvé les deux intrus!';
+            } else {
+                feedback.classList.add('incorrect', 'show');
+                feedback.innerHTML = `❌ ${correct}/2 bonnes réponses. Réfléchis bien!`;
+            }
+        }
+        
+        function checkTimeline2() {
+            const feedback = document.getElementById('feedbackTimeline2');
+            const inputs = document.querySelectorAll('.timeline-input-boot');
+            const answers = [2, 1, 4, 3];
+            let correct = 0;
+            
+            inputs.forEach((input, index) => {
+                if (parseInt(input.value) === answers[index]) {
+                    correct++;
+                }
+            });
+            
+            feedback.classList.remove('correct', 'incorrect');
+            
+            if (correct === 4) {
+                feedback.classList.add('correct', 'show');
+                feedback.innerHTML = '✅ Excellent! L\'ordre de démarrage est parfait!';
+            } else {
+                feedback.classList.add('incorrect', 'show');
+                feedback.innerHTML = `❌ ${correct}/4 bonnes réponses. Essaie encore!`;
+            }
+        }
+        
+        function checkDragDropFunctions() {
+            const feedback = document.getElementById('feedbackFunctions');
+            const interfaceCount = document.getElementById('drop-interface').children.length;
+            const gestionCount = document.getElementById('drop-gestion').children.length;
+            
+            feedback.classList.remove('correct', 'incorrect');
+            
+            if (interfaceCount === 2 && gestionCount === 3) {
+                feedback.classList.add('correct', 'show');
+                feedback.innerHTML = '✅ Excellent! Tu as bien classé toutes les fonctions!';
+            } else {
+                feedback.classList.add('incorrect', 'show');
+                feedback.innerHTML = `❌ Il y a encore des erreurs. Interface: ${interfaceCount}/2, Gestion: ${gestionCount}/3`;
+            }
+        }
+        
+        function checkAdvancedQuiz() {
+            const feedback = document.getElementById('feedbackAdv');
+            const adv1 = document.querySelector('input[name="adv1"]:checked');
+            const adv2 = document.querySelector('input[name="adv2"]:checked');
+            const adv3 = document.querySelector('input[name="adv3"]:checked');
+            
+            let correct = 0;
+            if (adv1 && adv1.value === 'b') correct++;
+            if (adv2 && adv2.value === 'b') correct++;
+            if (adv3 && adv3.value === 'b') correct++;
+            
+            feedback.classList.remove('correct', 'incorrect');
+            
+            if (correct === 3) {
+                feedback.classList.add('correct', 'show');
+                feedback.innerHTML = '✅ Bravo! Tu maîtrises vraiment les concepts!';
+            } else {
+                feedback.classList.add('incorrect', 'show');
+                feedback.innerHTML = `❌ ${correct}/3 bonnes réponses. Tu progresses!`;
+            }
+        }
+    </script>
+</body>
+</html>
