@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercices SE - Complet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .timer {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #ddd;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .question-container {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            margin-bottom: 30px;
+        }
+
+        .question-number {
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .question-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .question-text {
+            margin-left: 45px;
+            margin-bottom: 10px;
+        }
+
+        .question-text-ar {
+            margin-left: 45px;
+            font-size: 14px;
+            color: #666;
+            direction: rtl;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+        }
+
+        .question-content {
+            margin-left: 45px;
+        }
+
+        .option {
+            margin: 12px 0;
+            padding: 12px;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #ffc107;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option:hover {
+            background: #f0e8ff;
+            transform: translateX(5px);
+        }
+
+        .option input {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .option label {
+            cursor: pointer;
+            margin: 0;
+            display: block;
+        }
+
+        .option-text-fr {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .option-text-ar {
+            font-size: 13px;
+            color: #666;
+            direction: rtl;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-top: 3px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-top: 10px;
+            font-family: inherit;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        select option {
+            direction: ltr;
+        }
+
+        select option[dir="rtl"] {
+            direction: rtl;
+        }
+
+        .matching-group {
+            display: grid;
+            grid-template-columns: 1fr auto 1.5fr;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .match-left {
+            padding: 10px;
+            background: #ffe8e8;
+            border-radius: 5px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .match-left-ar {
+            font-size: 13px;
+            color: #666;
+            direction: rtl;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-top: 3px;
+        }
+
+        .arrow {
+            color: #667eea;
+            text-align: center;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+
+        .timeline-input {
+            width: 50px;
+            padding: 8px;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 12px;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+            flex: 1;
+        }
+
+        .timeline-content-ar {
+            font-size: 13px;
+            color: #666;
+            direction: rtl;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-top: 3px;
+        }
+
+        .button-group {
+            text-align: center;
+            margin-top: 40px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #764ba2;
+        }
+
+        button.secondary {
+            background: #6c757d;
+        }
+
+        button.secondary:hover {
+            background: #5a6268;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info {
+            background: #e7f3ff;
+            color: #0c5aa0;
+            border: 1px solid #b3d9ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .info-ar {
+            direction: rtl;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #667eea;
+            font-weight: bold;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .check-btn {
+            background: #28a745;
+            margin-top: 10px;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .check-btn:hover {
+            background: #218838;
+        }
+
+        .question-result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .question-result.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .question-result.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f0e8ff;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .score-display.show {
+            display: block;
+        }
+
+        .score-number {
+            font-size: 36px;
+            color: #764ba2;
+        }
+
+        @media (max-width: 768px) {
+            .matching-group {
+                grid-template-columns: 1fr;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🖥️ Système d'Exploitation - Exercices Complets</h1>
+            <p>Bureau, Fichiers, Dossiers et Concepts Clés - 30 Questions / نظام التشغيل - 30 سؤال</p>
+            <div class="timer" id="timer">⏱️ 20:00</div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+
+
+        <form id="exerciseForm">
+            <!-- SECTION 1: CONCEPTS DE BASE -->
+            <div class="section-title">📚 Section 1: Concepts de Base du SE / الفقرة 1: مفاهيم نظام التشغيل الأساسية
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">1</span>
+                </div>
+                <div class="question-text">Qu'est-ce qu'un système d'exploitation?</div>
+                <div class="question-text-ar">ما هو نظام التشغيل؟</div>
+                <div class="question-content">
+                    <select name="q1" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">Un logiciel qui gère le matériel / برنامج يدير الأجهزة</option>
+                        <option value="b">Un composant électronique / مكون إلكتروني</option>
+                        <option value="c">Une application Internet / تطبيق إنترنت</option>
+                        <option value="d">Un câble de connexion / كابل توصيل</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(1, 'a')">✓ Vérifier / تحقق</button>
+                    <div id="result-q1" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">2</span>
+                </div>
+                <div class="question-text">Pourquoi le SE est-il appelé le "chef d'orchestre" de l'ordinateur?</div>
+                <div class="question-text-ar">لماذا يسمى نظام التشغيل "قائد الفرقة الموسيقية" للحاسوب؟</div>
+                <div class="question-content">
+                    <select name="q2" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">Parce qu'il joue de la musique / لأنه يعزف الموسيقى</option>
+                        <option value="b">Parce qu'il coordonne tous les composants pour travailler ensemble / لأنه ينسق
+                            جميع المكونات للعمل معا</option>
+                        <option value="c">Parce qu'il contrôle les haut-parleurs / لأنه يتحكم في مكبرات الصوت</option>
+                        <option value="d">Parce qu'il affiche des vidéos / لأنه يعرض مقاطع فيديو</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(2, 'b')">✓ Vérifier / تحقق</button>
+                    <div id="result-q2" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">3</span>
+                </div>
+                <div class="question-text">Quel SE est le plus populaire sur ordinateur?</div>
+                <div class="question-text-ar">أي نظام تشغيل الأكثر شيوعا على الحاسوب؟</div>
+                <div class="question-content">
+                    <select name="q3" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">Linux / لينوكس</option>
+                        <option value="b">Windows / ويندوز</option>
+                        <option value="c">Android / أندرويد</option>
+                        <option value="d">macOS / ماك أو إس</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(3, 'b')">✓ Vérifier / تحقق</button>
+                    <div id="result-q3" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">4</span>
+                </div>
+                <div class="question-text">Qu'est-ce que la RAM et quel est son rôle?</div>
+                <div class="question-text-ar">ما هي ذاكرة الوصول العشوائي (RAM) وما دورها؟</div>
+                <div class="question-content">
+                    <select name="q4" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">C'est un stockage permanent qui garde les données / إنه تخزين دائم يحتفظ
+                            بالبيانات</option>
+                        <option value="b">C'est une mémoire rapide et temporaire pour les programmes en cours / إنها
+                            ذاكرة سريعة ومؤقتة للبرامج قيد التشغيل</option>
+                        <option value="c">C'est le processeur de l'ordinateur / إنه معالج الكمبيوتر</option>
+                        <option value="d">C'est l'écran de l'ordinateur / إنها شاشة الحاسوب</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(4, 'b')">✓ Vérifier / تحقق</button>
+                    <div id="result-q4" class="question-result"></div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: TYPES DE SE -->
+            <div class="section-title">🖥️ Section 2: Systèmes d'Exploitation / الفقرة 2: أنظمة التشغيل</div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">5</span>
+                </div>
+                <div class="question-text">Quel SE est utilisé sur les smartphones?</div>
+                <div class="question-text-ar">أي نظام تشغيل يتم استخدامه على الهواتف الذكية؟</div>
+                <div class="question-content">
+                    <select name="q5" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">Windows / ويندوز</option>
+                        <option value="b">macOS / ماك أو إس</option>
+                        <option value="c">Android / أندرويد</option>
+                        <option value="d">Linux / لينوكس</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(5, 'c')">✓ Vérifier / تحقق</button>
+                    <div id="result-q5" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">6</span>
+                </div>
+                <div class="question-text">Linux est:</div>
+                <div class="question-text-ar">لينوكس هو:</div>
+                <div class="question-content">
+                    <select name="q6" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">Payant et propriétaire / مدفوع وملكية خاصة</option>
+                        <option value="b">Gratuit et personnalisable / مجاني وقابل للتخصيص</option>
+                        <option value="c">Exclusif à Apple / حصري لشركة آبل</option>
+                        <option value="d">Uniquement pour serveurs / فقط للخادم</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(6, 'b')">✓ Vérifier / تحقق</button>
+                    <div id="result-q6" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">7</span>
+                </div>
+                <div class="question-text">macOS est l'OS de:</div>
+                <div class="question-text-ar">ماك أو إس هو نظام التشغيل التابع لشركة:</div>
+                <div class="question-content">
+                    <select name="q7" required>
+                        <option value="">-- Sélectionne --</option>
+                        <option value="a">Microsoft / مايكروسوفت</option>
+                        <option value="b">Apple / آبل</option>
+                        <option value="c">Google / جوجل</option>
+                        <option value="d">Linux Foundation / مؤسسة لينوكس</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(7, 'b')">✓ Vérifier / تحقق</button>
+                    <div id="result-q7" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">8</span>
+                </div>
+                <div class="question-text">Windows et MacOS sont les deux seuls systèmes d'exploitation qui existent.
+                </div>
+                <div class="question-text-ar">Windows و MacOS هما نظام التشغيل الوحيدان اللذان يوجدان.</div>
+                <div class="question-content">
+                    <div class="option">
+                        <input type="radio" name="q8" value="a" required>
+                        <label>
+                            <span class="option-text-fr">✅ Vrai</span>
+                            <span class="option-text-ar">✅ صحيح</span>
+                        </label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q8" value="b" required>
+                        <label>
+                            <span class="option-text-fr">❌ Faux</span>
+                            <span class="option-text-ar">❌ خطأ</span>
+                        </label>
+                    </div>
+                    <button type="button" class="check-btn" onclick="checkQuestion(8, 'b')">✓ Vérifier / تحقق</button>
+                    <div id="result-q8" class="question-result"></div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: LE BUREAU -->
+            <div class="section-title">🖱️ Section 3: Le Bureau et ses Éléments / الفقرة 3: سطح المكتب وعناصره</div>
+            <div style="text-align: center;">
+                <img src="https://i.imgur.com/ELvTh8i.jpeg" alt="Bureau" style="width: 70%;">
+            </div>
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">9</span>
+                </div>
+                <div class="question-text">Le Bureau s'affiche:</div>
+                <div class="question-text-ar">يظهر سطح المكتب:</div>
+                <div class="question-content">
+                    <select name="q9" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">Avant le démarrage / قبل البدء</option>
+                        <option value="b">Après la connexion / بعد تسجيل الدخول</option>
+                        <option value="c">Seulement avec un fichier / فقط مع ملف</option>
+                        <option value="d">Pendant le chargement / أثناء التحميل</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(9, 'b')">✓ Vérifier / تحقق</button>
+                    <div id="result-q9" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">10</span>
+                </div>
+                <div class="question-text">Le Bureau permet d'accéder à:</div>
+                <div class="question-text-ar">يتيح سطح المكتب الوصول إلى:</div>
+                <div class="question-content">
+                    <select name="q10" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">Uniquement les fichiers / الملفات فقط</option>
+                        <option value="b">Uniquement les applications / التطبيقات فقط</option>
+                        <option value="c">Fichiers, applications et fonctions du système / الملفات والتطبيقات ووظائف
+                            النظام</option>
+                        <option value="d">Uniquement aux paramètres / الإعدادات فقط</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(10, 'c')">✓ Vérifier / تحقق</button>
+                    <div id="result-q10" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">11</span>
+                </div>
+                <div class="question-text">L'élément qui organise les applications ouvertes:</div>
+                <div class="question-text-ar">العنصر الذي ينظم التطبيقات المفتوحة:</div>
+                <div class="question-content">
+                    <select name="q11" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">La barre de recherche / شريط البحث</option>
+                        <option value="b">La barre des tâches / شريط المهام</option>
+                        <option value="c">La zone de notification / منطقة الإشعارات</option>
+                        <option value="d">Les icônes de raccourci / أيقونات الاختصار</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(11, 'b')">✓ Vérifier / تحقق</button>
+                    <div id="result-q11" class="question-result"></div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: APPARIEMENT -->
+            <div class="section-title">🎯 Section 4: Appariement - Éléments du Bureau / الفقرة 4: المطابقة - عناصر سطح
+                المكتب</div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">12</span>
+                </div>
+                <div class="question-text">Relie chaque élément à sa fonction:</div>
+                <div class="question-text-ar">ربط كل عنصر بوظيفته:</div>
+                <div class="question-content">
+                    <div class="matching-group">
+                        <div class="match-left">
+                            <div>📋 Barre des tâches</div>
+                            <div class="match-left-ar">📋 شريط المهام</div>
+                        </div>
+                        <div class="arrow">→</div>
+                        <select name="match1" required>
+                            <option value="">-- Choisis --</option>
+                            <option value="a">Gère les applications ouvertes / يدير التطبيقات المفتوحة</option>
+                            <option value="b">Accès aux paramètres et applications / الوصول إلى الإعدادات والتطبيقات
+                            </option>
+                            <option value="c">Accès rapide aux fichiers / الوصول السريع إلى الملفات</option>
+                            <option value="d">Affiche l'heure, batterie, réseau / يعرض الوقت والبطارية والشبكة</option>
+                        </select>
+                        <button type="button" class="check-btn" onclick="checkQuestion('match1', 'a')">✓ Vérifier /
+                            تحقق</button>
+                        <div id="result-match1" class="question-result"></div>
+                    </div>
+
+                    <div class="matching-group">
+                        <div class="match-left">
+                            <div>⚙️ Bouton Démarrer</div>
+                            <div class="match-left-ar">⚙️ زر البدء</div>
+                        </div>
+                        <div class="arrow">→</div>
+                        <select name="match2" required>
+                            <option value="">-- Choisis --</option>
+                            <option value="a">Gère les applications ouvertes / يدير التطبيقات المفتوحة</option>
+                            <option value="b">Accès aux paramètres et applications / الوصول إلى الإعدادات والتطبيقات
+                            </option>
+                            <option value="c">Accès rapide aux fichiers / الوصول السريع إلى الملفات</option>
+                            <option value="d">Affiche l'heure, batterie, réseau / يعرض الوقت والبطارية والشبكة</option>
+                        </select>
+                        <button type="button" class="check-btn" onclick="checkQuestion('match2', 'b')">✓ Vérifier /
+                            تحقق</button>
+                        <div id="result-match2" class="question-result"></div>
+                    </div>
+
+                    <div class="matching-group">
+                        <div class="match-left">
+                            <div>🎯 Icônes du Bureau</div>
+                            <div class="match-left-ar">🎯 أيقونات سطح المكتب</div>
+                        </div>
+                        <div class="arrow">→</div>
+                        <select name="match3" required>
+                            <option value="">-- Choisis --</option>
+                            <option value="a">Gère les applications ouvertes / يدير التطبيقات المفتوحة</option>
+                            <option value="b">Accès aux paramètres et applications / الوصول إلى الإعدادات والتطبيقات
+                            </option>
+                            <option value="c">Accès rapide aux fichiers / الوصول السريع إلى الملفات</option>
+                            <option value="d">Affiche l'heure, batterie, réseau / يعرض الوقت والبطارية والشبكة</option>
+                        </select>
+                        <button type="button" class="check-btn" onclick="checkQuestion('match3', 'c')">✓ Vérifier /
+                            تحقق</button>
+                        <div id="result-match3" class="question-result"></div>
+                    </div>
+
+                    <div class="matching-group">
+                        <div class="match-left">
+                            <div>📔 Zone notification</div>
+                            <div class="match-left-ar">📔 منطقة الإشعارات</div>
+                        </div>
+                        <div class="arrow">→</div>
+                        <select name="match4" required>
+                            <option value="">-- Choisis --</option>
+                            <option value="a">Gère les applications ouvertes / يدير التطبيقات المفتوحة</option>
+                            <option value="b">Accès aux paramètres et applications / الوصول إلى الإعدادات والتطبيقات
+                            </option>
+                            <option value="c">Accès rapide aux fichiers / الوصول السريع إلى الملفات</option>
+                            <option value="d">Affiche l'heure, batterie, réseau / يعرض الوقت والبطارية والشبكة</option>
+                        </select>
+                        <button type="button" class="check-btn" onclick="checkQuestion('match4', 'd')">✓ Vérifier /
+                            تحقق</button>
+                        <div id="result-match4" class="question-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: CHRONOLOGIE -->
+            <div class="section-title">⏱️ Section 5: Chronologie - Ordre des Étapes / الفقرة 5: الترتيب الزمني - ترتيب
+                الخطوات</div>
+            <div style="text-align: center;">
+                <img src="https://i.imgur.com/8ePy5Ny.png" alt="Bureau" style="width: 70%;">
+            </div>
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">16</span>
+                </div>
+                <div class="question-text">Numérote ces étapes de 1 à 5 (ouverture d'un fichier):</div>
+                <div class="question-text-ar">رقم هذه الخطوات من 1 إلى 5 (فتح ملف):</div>
+                <div class="question-content">
+                    <div class="timeline-item">
+                        <input type="number" min="1" max="5" name="timeline1" class="timeline-input" placeholder="?"
+                            required>
+                        <div class="timeline-content">
+                            <div>Tu cliques sur un fichier</div>
+                            <div class="timeline-content-ar">تنقر على ملف</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <input type="number" min="1" max="5" name="timeline2" class="timeline-input" placeholder="?"
+                            required>
+                        <div class="timeline-content">
+                            <div>Le SE retrouve le fichier sur le disque dur</div>
+                            <div class="timeline-content-ar">يجد نظام التشغيل الملف على القرص الصلب</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <input type="number" min="1" max="5" name="timeline3" class="timeline-input" placeholder="?"
+                            required>
+                        <div class="timeline-content">
+                            <div>Le SE charge le fichier en mémoire RAM</div>
+                            <div class="timeline-content-ar">يحمل نظام التشغيل الملف في ذاكرة الوصول العشوائي</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <input type="number" min="1" max="5" name="timeline4" class="timeline-input" placeholder="?"
+                            required>
+                        <div class="timeline-content">
+                            <div>Le SE affiche le fichier à l'écran</div>
+                            <div class="timeline-content-ar">يعرض نظام التشغيل الملف على الشاشة</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <input type="number" min="1" max="5" name="timeline5" class="timeline-input" placeholder="?"
+                            required>
+                        <div class="timeline-content">
+                            <div>Tu vois le fichier apparaître</div>
+                            <div class="timeline-content-ar">ترى الملف يظهر أمامك</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: FICHIERS ET DOSSIERS -->
+            <div class="section-title">📁 Section 6: Fichiers et Dossiers / الفقرة 6: الملفات والمجلدات</div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">21</span>
+                </div>
+                <div class="question-text">Un fichier peut contenir plusieurs dossiers.</div>
+                <div class="question-text-ar">يمكن للملف أن يحتوي على عدة مجلدات.</div>
+                <div class="question-content">
+                    <div class="option">
+                        <input type="radio" name="q21" value="a" required>
+                        <label>
+                            <span class="option-text-fr">✅ Vrai</span>
+                            <span class="option-text-ar">✅ صحيح</span>
+                        </label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q21" value="b" required>
+                        <label>
+                            <span class="option-text-fr">❌ Faux</span>
+                            <span class="option-text-ar">❌ خطأ</span>
+                        </label>
+                    </div>
+                    <button type="button" class="check-btn" onclick="checkQuestion(21, 'b')">✓ Vérifier / تحقق</button>
+                    <div id="result-q21" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">22</span>
+                </div>
+                <div class="question-text">Un dossier peut contenir fichiers et sous-dossiers.</div>
+                <div class="question-text-ar">يمكن للمجلد أن يحتوي على ملفات ومجلدات فرعية.</div>
+                <div class="question-content">
+                    <div class="option">
+                        <input type="radio" name="q22" value="a" required>
+                        <label>
+                            <span class="option-text-fr">✅ Vrai</span>
+                            <span class="option-text-ar">✅ صحيح</span>
+                        </label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q22" value="b" required>
+                        <label>
+                            <span class="option-text-fr">❌ Faux</span>
+                            <span class="option-text-ar">❌ خطأ</span>
+                        </label>
+                    </div>
+                    <button type="button" class="check-btn" onclick="checkQuestion(22, 'a')">✓ Vérifier / تحقق</button>
+                    <div id="result-q22" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">23</span>
+                </div>
+                <div class="question-text">Un dossier s'appelle aussi "répertoire".</div>
+                <div class="question-text-ar">يُسمى المجلد أيضاً "دليل".</div>
+                <div class="question-content">
+                    <div class="option">
+                        <input type="radio" name="q23" value="a" required>
+                        <label>
+                            <span class="option-text-fr">✅ Vrai</span>
+                            <span class="option-text-ar">✅ صحيح</span>
+                        </label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" name="q23" value="b" required>
+                        <label>
+                            <span class="option-text-fr">❌ Faux</span>
+                            <span class="option-text-ar">❌ خطأ</span>
+                        </label>
+                    </div>
+                    <button type="button" class="check-btn" onclick="checkQuestion(23, 'a')">✓ Vérifier / تحقق</button>
+                    <div id="result-q23" class="question-result"></div>
+                </div>
+            </div>
+
+            <!-- SECTION 7: EXTENSIONS -->
+            <div class="section-title">📄 Section 7: Types de Fichiers et Extensions / الفقرة 7: أنواع الملفات
+                والامتدادات</div>
+            <div style="text-align: center;">
+                <img src="https://i.imgur.com/jNbPRx6.png" alt="Extensions" style="width: 70%;">
+            </div>
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">24</span>
+                </div>
+                <div class="question-text">Extension d'un document Word:</div>
+                <div class="question-text-ar">امتداد ملف Word:</div>
+                <div class="question-content">
+                    <select name="q24" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">.docx</option>
+                        <option value="b">.xlsx</option>
+                        <option value="c">.pptx</option>
+                        <option value="d">.pdf</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(24, 'a')">✓ Vérifier / تحقق</button>
+                    <div id="result-q24" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">25</span>
+                </div>
+                <div class="question-text">Extension d'une image:</div>
+                <div class="question-text-ar">امتداد الصورة:</div>
+                <div class="question-content">
+                    <select name="q25" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">.mp4</option>
+                        <option value="b">.jpg</option>
+                        <option value="c">.mp3</option>
+                        <option value="d">.zip</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(25, 'b')">✓ Vérifier / تحقق</button>
+                    <div id="result-q25" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">26</span>
+                </div>
+                <div class="question-text">Extension d'une vidéo:</div>
+                <div class="question-text-ar">امتداد الفيديو:</div>
+                <div class="question-content">
+                    <select name="q26" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">.mp3</option>
+                        <option value="b">.pdf</option>
+                        <option value="c">.mp4</option>
+                        <option value="d">.jpg</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(26, 'c')">✓ Vérifier / تحقق</button>
+                    <div id="result-q26" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">27</span>
+                </div>
+                <div class="question-text">Un fichier compressé a l'extension:</div>
+                <div class="question-text-ar">ملف مضغوط له الامتداد:</div>
+                <div class="question-content">
+                    <select name="q27" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">.rar ou .zip</option>
+                        <option value="b">.doc ou .txt</option>
+                        <option value="c">.mp3 ou .wav</option>
+                        <option value="d">.exe ou .msi</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(27, 'a')">✓ Vérifier / تحقق</button>
+                    <div id="result-q27" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">28</span>
+                </div>
+                <div class="question-text">Un fichier exécutable:</div>
+                <div class="question-text-ar">ملف قابل للتنفيذ:</div>
+                <div class="question-content">
+                    <select name="q28" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">.txt</option>
+                        <option value="b">.exe</option>
+                        <option value="c">.jpg</option>
+                        <option value="d">.pdf</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(28, 'b')">✓ Vérifier / تحقق</button>
+                    <div id="result-q28" class="question-result"></div>
+                </div>
+            </div>
+
+            <!-- SECTION 8: QUESTIONS AVANCÉES -->
+            <div class="section-title">🧠 Section 8: Questions Avancées / الفقرة 8: أسئلة متقدمة</div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">29</span>
+                </div>
+                <div class="question-text">Si on supprime le SE d'un ordinateur, que se passe-t-il?</div>
+                <div class="question-text-ar">إذا حذفنا نظام التشغيل من الحاسوب، ماذا يحدث؟</div>
+                <div class="question-content">
+                    <select name="q29" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">L'ordinateur fonctionne normalement / يعمل الحاسوب بشكل طبيعي</option>
+                        <option value="b">L'ordinateur s'arrête et ne peut plus être utilisé / يتوقف الحاسوب ولا يمكن
+                            استخدامه</option>
+                        <option value="c">L'ordinateur continue avec un autre SE automatiquement / يستمر الحاسوب مع نظام
+                            تشغيل آخر تلقائياً</option>
+                        <option value="d">C'est impossible, on ne peut pas le supprimer / هذا مستحيل، لا يمكننا حذفه
+                        </option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(29, 'b')">✓ Vérifier / تحقق</button>
+                    <div id="result-q29" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-title">
+                    <span class="question-number">30</span>
+                </div>
+                <div class="question-text">Parmi ces éléments, quel n'est PAS un système d'exploitation?</div>
+                <div class="question-text-ar">من بين هذه العناصر، أيها ليس نظام تشغيل؟</div>
+                <div class="question-content">
+                    <select name="q30" required>
+                        <option value="">-- Sélectionne la réponse --</option>
+                        <option value="a">Windows / ويندوز</option>
+                        <option value="b">Google Chrome / جوجل كروم</option>
+                        <option value="c">MacOS / ماك أو إس</option>
+                        <option value="d">Android / أندرويد</option>
+                    </select>
+                    <button type="button" class="check-btn" onclick="checkQuestion(30, 'b')">✓ Vérifier / تحقق</button>
+                    <div id="result-q30" class="question-result"></div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="button" onclick="resetForm()" class="secondary">🔄 Recommencer / إعادة تعيين</button>
+                <button type="button" onclick="checkAnswers()">✅ Vérifier Tout / تحقق من الكل</button>
+                <button type="button" onclick="saveAnswers()">💾 Télécharger / تحميل</button>
+                <button type="button" onclick="window.print()">🖨️ Imprimer / طباعة</button>
+            </div>
+
+            <div id="feedback" class="feedback"></div>
+            <div id="scoreDisplay" class="score-display"></div>
+        </form>
+    </div>
+
+    <script>
+        let timeRemaining = 20 * 60;
+        let correctAnswers = 0;
+        let totalQuestions = 30;
+
+        const correctAnswersMap = {
+            q1: 'a', q2: 'b', q3: 'b', q4: 'b', q5: 'c', q6: 'b', q7: 'b', q8: 'b',
+            q9: 'b', q10: 'c', q11: 'b', match1: 'a', match2: 'b', match3: 'c', match4: 'd',
+            timeline1: '1', timeline2: '2', timeline3: '3', timeline4: '4', timeline5: '5',
+            q21: 'b', q22: 'a', q23: 'a',
+            q24: 'a', q25: 'b', q26: 'c', q27: 'a', q28: 'b',
+            q29: 'b', q30: 'b'
+        };
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function updateTimer() {
+            const timerEl = document.getElementById('timer');
+            timerEl.textContent = `⏱️ ${formatTime(timeRemaining)}`;
+
+            if (timeRemaining <= 300) {
+                timerEl.style.background = '#ff6b6b';
+            }
+            if (timeRemaining <= 0) {
+                timerEl.textContent = '⏱️ TEMPS ÉCOULÉ! / انتهى الوقت!';
+                timerEl.style.background = '#dc3545';
+            }
+
+            timeRemaining--;
+        }
+
+        setInterval(updateTimer, 1000);
+
+        function updateProgress() {
+            const selects = document.querySelectorAll('select');
+            const radios = document.querySelectorAll('input[type="radio"]');
+            const numbers = document.querySelectorAll('input[type="number"]');
+            let filled = 0;
+
+            selects.forEach(select => {
+                if (select.value) filled++;
+            });
+
+            const radioGroups = {};
+            radios.forEach(radio => {
+                if (radio.checked) {
+                    radioGroups[radio.name] = true;
+                }
+            });
+            filled += Object.keys(radioGroups).length;
+
+            numbers.forEach(num => {
+                if (num.value) filled++;
+            });
+
+            const total = selects.length + 5 + numbers.length;
+            const progress = (filled / total) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function checkQuestion(questionNum, correctAnswer) {
+            let questionName;
+            if (typeof questionNum === 'string') {
+                questionName = questionNum;
+            } else {
+                questionName = 'q' + questionNum;
+            }
+
+            const element = document.querySelector(`select[name="${questionName}"]`) ||
+                document.querySelector(`input[name="${questionName}"]:checked`);
+            const resultDiv = document.getElementById(`result-${questionName}`);
+
+            if (!element || !element.value) {
+                resultDiv.textContent = '⚠️ Veuillez sélectionner une réponse / ⚠️ يرجى تحديد إجابة';
+                resultDiv.className = 'question-result incorrect';
+                return;
+            }
+
+            if (element.value === correctAnswer) {
+                resultDiv.textContent = '✅ Correct! / ✅ صحيح!';
+                resultDiv.className = 'question-result correct';
+            } else {
+                resultDiv.textContent = '❌ Incorrect! / ❌ خطأ! Réponse correcte: ' + correctAnswer;
+                resultDiv.className = 'question-result incorrect';
+            }
+        }
+
+        document.querySelectorAll('select, input').forEach(el => {
+            el.addEventListener('change', updateProgress);
+        });
+
+        function resetForm() {
+            if (confirm('Es-tu sûr de vouloir tout effacer? / هل أنت متأكد من رغبتك في حذف كل شيء؟')) {
+                document.getElementById('exerciseForm').reset();
+                document.getElementById('feedback').classList.remove('show');
+                document.getElementById('scoreDisplay').classList.remove('show');
+                document.querySelectorAll('.question-result').forEach(div => div.className = 'question-result');
+                updateProgress();
+            }
+        }
+
+        function checkAnswers() {
+            const feedback = document.getElementById('feedback');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const form = document.getElementById('exerciseForm');
+
+            let correct = 0;
+            let answered = 0;
+
+            Object.entries(correctAnswersMap).forEach(([fieldName, correctValue]) => {
+                const element = form.querySelector(`select[name="${fieldName}"], input[name="${fieldName}"]`);
+
+                if (element) {
+                    let userValue = '';
+                    if (element.tagName === 'SELECT') {
+                        userValue = element.value;
+                    } else if (element.type === 'radio') {
+                        const checked = form.querySelector(`input[name="${fieldName}"]:checked`);
+                        userValue = checked ? checked.value : '';
+                    } else if (element.type === 'number') {
+                        userValue = element.value;
+                    }
+
+                    if (userValue) {
+                        answered++;
+                        if (userValue === correctValue) {
+                            correct++;
+                        }
+                    }
+                }
+            });
+
+            if (answered === 0) {
+                feedback.textContent = '⚠️ Veuillez répondre à au moins une question! / ⚠️ يرجى الإجابة على سؤال واحد على الأقل!';
+                feedback.className = 'feedback show error';
+                return;
+            }
+
+            const score = (correct / totalQuestions) * 20;
+            const percentage = (correct / totalQuestions) * 100;
+
+            scoreDisplay.innerHTML = `
+                <div>📊 Résultats / النتائج</div>
+                <div><span class="score-number">${score.toFixed(2)}</span> / 20 points</div>
+                <div>${correct}/${totalQuestions} réponses correctes / إجابات صحيحة</div>
+                <div>${percentage.toFixed(1)}% / ${percentage.toFixed(1)}٪</div>
+            `;
+            scoreDisplay.classList.add('show');
+
+            feedback.textContent = '✅ Vérification terminée! / ✅ اكتمل التحقق!';
+            feedback.className = 'feedback show success';
+        }
+
+        function saveAnswers() {
+            const form = document.getElementById('exerciseForm');
+            const formData = new FormData(form);
+
+            let text = 'FICHE D\'EXERCICE - MES RÉPONSES (30 QUESTIONS)\n';
+            text += 'ورقة التمرين - إجاباتي (30 سؤال)\n';
+            text += '==============================================\n\n';
+
+            let count = 1;
+            for (let [key, value] of formData.entries()) {
+                if (value) {
+                    text += `Q${count}. ${key}: ${value}\n`;
+                    count++;
+                }
+            }
+
+            text += '\n==============================================\n';
+            text += 'Généré le: ' + new Date().toLocaleString('fr-FR') + '\n';
+            text += 'تم الإنشاء في: ' + new Date().toLocaleString('ar-SA') + '\n';
+
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', 'mes_reponses.txt');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = '✅ Tes réponses ont été téléchargées! / ✅ تم تحميل إجاباتك!';
+            feedback.className = 'feedback show success';
+            setTimeout(() => feedback.classList.remove('show'), 3000);
+        }
+    </script>
